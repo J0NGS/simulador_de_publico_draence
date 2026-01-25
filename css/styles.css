@@ -1,0 +1,163 @@
+/* Mantine Custom — Tema claro e orgânico */
+:root {
+  /* Escala Brand (Verde Musgo) */
+  --brand-light: #f1f4ef;
+  --brand-subtle: #c5d1bf;
+  --brand-primary: #576352; /* Cor principal */
+  --brand-dark: #34402e;
+
+  /* Backgrounds */
+  --bg-page: #EEF3E1;  /* Fundo da página */
+  --bg-card: #F8FAF4;  /* Fundo dos cards */
+  --bg-input: #FFFFFF;
+
+  /* Texto */
+  --text-primary: #252B23;
+  --text-secondary: #5C6658;
+  --text-muted: #8ba681;
+
+  /* Accent (Destaque) */
+  --accent: #C88D56; /* Laranja terroso para botões de ação ou destaques */
+  
+  /* Bordas e Raios */
+  --radius-md: 12px;
+  --border-color: #dbe4d5;
+}
+
+/* Reset básico */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-weight: 300;
+}
+
+/* Header */
+header{
+  background: var(--brand-primary);
+  color: var(--brand-light);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(34,41,31,0.06);
+}
+.brand-box{
+  width:44px; height:44px; border-radius:8px; background:var(--brand-primary); color:var(--brand-light); font-weight:700; display:inline-flex; font-size:20px; align-items:center; justify-content:center;
+}
+header h1, header small{ color: var(--brand-primary) }
+
+/* Cards */
+.card, .card.card-dark, .pricing-card, .summary-card{
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(87,99,82,0.08);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+  color: var(--text-primary);
+}
+.card:hover, .pricing-card:hover, .summary-card:hover{ transform: translateY(-4px) }
+
+/* Placeholders and chart */
+.placeholder{display:inline-block; height:36px; border-radius:6px; opacity:0.95}
+.chart-placeholder{height:160px; border-radius:10px}
+
+/* Typography - títulos e rótulos com mais destaque */
+/* Cabeçalhos do app */
+h1, h2, h3, h4, h5, .card-title, .card-subtitle {
+  font-weight: 700; /* mais forte para destaque visual */
+  color: var(--brand-dark);
+  letter-spacing: 0.6px;
+}
+
+/* Rótulos de formulários e pequenos títulos */
+.form-label, .small, label {
+  font-weight: 700; /* rótulos em negrito conforme solicitado */
+  color: var(--brand-dark);
+}
+
+.text-muted{color:var(--text-muted)}
+
+/* Inputs e formulários */
+#sectors-container input[type="number"]{
+  background: var(--bg-input);
+  border: 1px solid var(--brand-subtle);
+  border-radius: 8px;
+  color: var(--brand-dark);
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  text-align: right;
+}
+#sectors-container input[type="number"]::-webkit-outer-spin-button,
+#sectors-container input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+#sectors-container input[type="number"]:focus{
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 6px 20px rgba(88,99,82,0.08);
+}
+
+/* Moment buttons (bolinhas) */
+.moment-btn{
+  width:36px; height:36px; border-radius:50%; border: none; cursor:pointer; padding:0; transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease; box-shadow: 0 1px 4px rgba(34,41,31,0.06);
+}
+.moment-btn:focus{outline:none; transform:scale(1.03)}
+.moment-btn:hover{transform:translateY(-2px)}
+
+/* States */
+.moment-btn.state-win{ background: var(--brand-primary); box-shadow: 0 6px 18px rgba(87,99,82,0.12); }
+.moment-btn.state-draw{ background: var(--brand-subtle); box-shadow: 0 4px 12px rgba(197,209,191,0.08); }
+.moment-btn.state-loss{ background: #d68585; box-shadow: 0 6px 18px rgba(214,133,133,0.12); }
+.moment-btn.state-loss:focus{ box-shadow: 0 6px 20px rgba(214,133,133,0.16); }
+
+/* Progress bars */
+#progress-container .progress{ height:6px; background: var(--brand-light); border-radius:999px; overflow:hidden; }
+#progress-container .progress .progress-bar{ border-radius:999px; box-shadow:none; color: var(--bg-card); display:flex; align-items:center; justify-content:center; font-weight:600; }
+#progress-container .progress .progress-bar.bg-info{ background-image: linear-gradient(90deg, var(--brand-primary), var(--brand-subtle)); }
+#bar-visitante{ background-image: linear-gradient(90deg, #5b5b5b, #c5d1bf); }
+
+/* KPIs */
+#kpi-summary .small{ color: var(--text-secondary) }
+#total-attendance{ font-weight:600; color:var(--text-primary) }
+#gross-revenue, #gross-revenue-small{ color:var(--text-primary) !important; font-weight:600 }
+#net-profit, #net-profit-small{ color: var(--text-primary) !important; font-weight:700 }
+
+/* Responsividade e ajustes menores */
+@media (max-width: 991px){
+  .brand-box{width:36px;height:36px}
+}
+
+/* Minor tweaks */
+.btn-outline-light{ border-color: var(--border-color); color: var(--brand-primary) }
+.cursor-pointer { cursor: pointer; }
+
+/* Focus states for future inputs */
+input:focus, select:focus, textarea:focus{ outline: none; box-shadow: 0 0 0 4px rgba(200,141,86,0.06); border-color: var(--brand-primary) }
+
+/* Texto percentual visível dentro das barras de progresso */
+.progress-percent {
+  position: absolute;
+  right: 6px;
+  top: 2px;
+  font-size: 0.85rem;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+/* feedback visual para input de preço */
+.price-cheap {
+  border-color: #4cd964 !important;
+  color: #4cd964 !important;
+  background: rgba(76, 217, 100, 0.06) !important;
+}
+.price-expensive {
+  border-color: #ffcc00 !important;
+  color: #ffcc00 !important;
+  background: rgba(255, 204, 0, 0.04) !important;
+}
+.price-abusive {
+  border-color: #ff3b30 !important;
+  color: #ff3b30 !important;
+  background: rgba(255, 59, 48, 0.04) !important;
+}

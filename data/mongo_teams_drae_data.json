@@ -1,0 +1,2386 @@
+[
+  {
+    "_id": 1,
+    "name": "SUMYCIDE",
+    "imgUrl": "https://i.imgur.com/cCeqMYz.png",
+    "cityId": 1,
+    "currentSeries": "A",
+    "mascot": "Dragão",
+    "stadium": "Arena Solaris",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 48000,
+    "foundedYear": 1994,
+    "fans": [
+      {
+        "fans": 2916304,
+        "cityId": 1
+      },
+      {
+        "fans": 182610,
+        "cityId": 2
+      },
+      {
+        "fans": 38739,
+        "cityId": 3
+      },
+      {
+        "fans": 65199,
+        "cityId": 4
+      },
+      {
+        "fans": 48854,
+        "cityId": 5
+      },
+      {
+        "fans": 20532,
+        "cityId": 6
+      },
+      {
+        "fans": 37853,
+        "cityId": 7
+      },
+      {
+        "fans": 3230,
+        "cityId": 8
+      },
+      {
+        "fans": 15267,
+        "cityId": 9
+      },
+      {
+        "fans": 1734,
+        "cityId": 10
+      },
+      {
+        "fans": 1802,
+        "cityId": 11
+      },
+      {
+        "fans": 1819,
+        "cityId": 12
+      },
+      {
+        "fans": 1830,
+        "cityId": 13
+      },
+      {
+        "fans": 1687,
+        "cityId": 14
+      },
+      {
+        "fans": 2735,
+        "cityId": 15
+      },
+      {
+        "fans": 1159,
+        "cityId": 16
+      },
+      {
+        "fans": 1059,
+        "cityId": 17
+      },
+      {
+        "fans": 945,
+        "cityId": 18
+      },
+      {
+        "fans": 380,
+        "cityId": 19
+      },
+      {
+        "fans": 763,
+        "cityId": 20
+      },
+      {
+        "fans": 299,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 2,
+    "name": "WALV",
+    "imgUrl": "https://i.imgur.com/9f7atYN.png",
+    "cityId": 6,
+    "currentSeries": "A",
+    "mascot": "Gavião",
+    "stadium": "Ninho do Gavião",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 47000,
+    "foundedYear": 1990,
+    "fans": [
+      {
+        "fans": 189496,
+        "cityId": 1
+      },
+      {
+        "fans": 300140,
+        "cityId": 2
+      },
+      {
+        "fans": 63672,
+        "cityId": 3
+      },
+      {
+        "fans": 107162,
+        "cityId": 4
+      },
+      {
+        "fans": 80297,
+        "cityId": 5
+      },
+      {
+        "fans": 1214061,
+        "cityId": 6
+      },
+      {
+        "fans": 62215,
+        "cityId": 7
+      },
+      {
+        "fans": 5309,
+        "cityId": 8
+      },
+      {
+        "fans": 25092,
+        "cityId": 9
+      },
+      {
+        "fans": 2850,
+        "cityId": 10
+      },
+      {
+        "fans": 2962,
+        "cityId": 11
+      },
+      {
+        "fans": 2991,
+        "cityId": 12
+      },
+      {
+        "fans": 3008,
+        "cityId": 13
+      },
+      {
+        "fans": 2772,
+        "cityId": 14
+      },
+      {
+        "fans": 4496,
+        "cityId": 15
+      },
+      {
+        "fans": 1905,
+        "cityId": 16
+      },
+      {
+        "fans": 1740,
+        "cityId": 17
+      },
+      {
+        "fans": 1554,
+        "cityId": 18
+      },
+      {
+        "fans": 624,
+        "cityId": 19
+      },
+      {
+        "fans": 1254,
+        "cityId": 20
+      },
+      {
+        "fans": 492,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 3,
+    "name": "GOOCK",
+    "imgUrl": "https://i.imgur.com/76iBzVD.png",
+    "cityId": 3,
+    "currentSeries": "A",
+    "mascot": "Globinho",
+    "stadium": "Arena Goóck",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 19300,
+    "foundedYear": 2007,
+    "fans": [
+      {
+        "fans": 109886,
+        "cityId": 1
+      },
+      {
+        "fans": 174046,
+        "cityId": 2
+      },
+      {
+        "fans": 1867782,
+        "cityId": 3
+      },
+      {
+        "fans": 62141,
+        "cityId": 4
+      },
+      {
+        "fans": 46563,
+        "cityId": 5
+      },
+      {
+        "fans": 19569,
+        "cityId": 6
+      },
+      {
+        "fans": 36077,
+        "cityId": 7
+      },
+      {
+        "fans": 3079,
+        "cityId": 8
+      },
+      {
+        "fans": 14551,
+        "cityId": 9
+      },
+      {
+        "fans": 1653,
+        "cityId": 10
+      },
+      {
+        "fans": 1718,
+        "cityId": 11
+      },
+      {
+        "fans": 1734,
+        "cityId": 12
+      },
+      {
+        "fans": 1744,
+        "cityId": 13
+      },
+      {
+        "fans": 1608,
+        "cityId": 14
+      },
+      {
+        "fans": 2607,
+        "cityId": 15
+      },
+      {
+        "fans": 1105,
+        "cityId": 16
+      },
+      {
+        "fans": 1009,
+        "cityId": 17
+      },
+      {
+        "fans": 901,
+        "cityId": 18
+      },
+      {
+        "fans": 362,
+        "cityId": 19
+      },
+      {
+        "fans": 727,
+        "cityId": 20
+      },
+      {
+        "fans": 285,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 4,
+    "name": "FORTS CITY",
+    "imgUrl": "https://i.imgur.com/IkXu3xm.png",
+    "cityId": 2,
+    "currentSeries": "B",
+    "mascot": "Cavaleiro",
+    "stadium": "A Fortaleza",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 22000,
+    "foundedYear": 1999,
+    "fans": [
+      {
+        "fans": 1168862,
+        "cityId": 2
+      }
+    ]
+  },
+  {
+    "_id": 5,
+    "name": "PORTS",
+    "imgUrl": "https://i.imgur.com/QRLBB7u.png",
+    "cityId": 4,
+    "currentSeries": "A",
+    "mascot": "Dragão do Mar",
+    "stadium": "Porto Arena",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 25000,
+    "foundedYear": 2010,
+    "fans": [
+      {
+        "fans": 267959,
+        "cityId": 1
+      },
+      {
+        "fans": 424417,
+        "cityId": 2
+      },
+      {
+        "fans": 90037,
+        "cityId": 3
+      },
+      {
+        "fans": 1406357,
+        "cityId": 4
+      },
+      {
+        "fans": 113545,
+        "cityId": 5
+      },
+      {
+        "fans": 47719,
+        "cityId": 6
+      },
+      {
+        "fans": 87976,
+        "cityId": 7
+      },
+      {
+        "fans": 7508,
+        "cityId": 8
+      },
+      {
+        "fans": 35482,
+        "cityId": 9
+      },
+      {
+        "fans": 4030,
+        "cityId": 10
+      },
+      {
+        "fans": 4188,
+        "cityId": 11
+      },
+      {
+        "fans": 4229,
+        "cityId": 12
+      },
+      {
+        "fans": 4253,
+        "cityId": 13
+      },
+      {
+        "fans": 3920,
+        "cityId": 14
+      },
+      {
+        "fans": 6357,
+        "cityId": 15
+      },
+      {
+        "fans": 2694,
+        "cityId": 16
+      },
+      {
+        "fans": 2461,
+        "cityId": 17
+      },
+      {
+        "fans": 2197,
+        "cityId": 18
+      },
+      {
+        "fans": 882,
+        "cityId": 19
+      },
+      {
+        "fans": 1773,
+        "cityId": 20
+      },
+      {
+        "fans": 695,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 6,
+    "name": "LANDSCAPE",
+    "imgUrl": "https://i.imgur.com/XKBn8JE.png",
+    "cityId": 5,
+    "currentSeries": "C",
+    "mascot": "Serpente",
+    "stadium": "Esmeraldão",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 26000,
+    "foundedYear": 2006,
+    "fans": [
+      {
+        "fans": 1335684,
+        "cityId": 5
+      }
+    ]
+  },
+  {
+    "_id": 7,
+    "name": "WEST",
+    "imgUrl": "https://i.imgur.com/qIoh0jC.png",
+    "cityId": 8,
+    "currentSeries": "A",
+    "mascot": "Pantera Rei",
+    "stadium": "Arena Partage",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 40000,
+    "foundedYear": 2004,
+    "fans": [
+      {
+        "fans": 38992,
+        "cityId": 1
+      },
+      {
+        "fans": 61760,
+        "cityId": 2
+      },
+      {
+        "fans": 13102,
+        "cityId": 3
+      },
+      {
+        "fans": 22051,
+        "cityId": 4
+      },
+      {
+        "fans": 16523,
+        "cityId": 5
+      },
+      {
+        "fans": 6944,
+        "cityId": 6
+      },
+      {
+        "fans": 12802,
+        "cityId": 7
+      },
+      {
+        "fans": 588909,
+        "cityId": 8
+      },
+      {
+        "fans": 5163,
+        "cityId": 9
+      },
+      {
+        "fans": 586,
+        "cityId": 10
+      },
+      {
+        "fans": 609,
+        "cityId": 11
+      },
+      {
+        "fans": 615,
+        "cityId": 12
+      },
+      {
+        "fans": 619,
+        "cityId": 13
+      },
+      {
+        "fans": 570,
+        "cityId": 14
+      },
+      {
+        "fans": 925,
+        "cityId": 15
+      },
+      {
+        "fans": 392,
+        "cityId": 16
+      },
+      {
+        "fans": 358,
+        "cityId": 17
+      },
+      {
+        "fans": 320,
+        "cityId": 18
+      },
+      {
+        "fans": 128,
+        "cityId": 19
+      },
+      {
+        "fans": 258,
+        "cityId": 20
+      },
+      {
+        "fans": 101,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 8,
+    "name": "RANGERS",
+    "imgUrl": "https://i.imgur.com/kC0OFKl.png",
+    "cityId": 10,
+    "currentSeries": "B",
+    "mascot": "Guardão",
+    "stadium": "Marcos Rangel/Marcão",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 25000,
+    "foundedYear": 2005,
+    "fans": [
+      {
+        "fans": 37392,
+        "cityId": 1
+      },
+      {
+        "fans": 59225,
+        "cityId": 2
+      },
+      {
+        "fans": 12564,
+        "cityId": 3
+      },
+      {
+        "fans": 21146,
+        "cityId": 4
+      },
+      {
+        "fans": 15845,
+        "cityId": 5
+      },
+      {
+        "fans": 6659,
+        "cityId": 6
+      },
+      {
+        "fans": 12276,
+        "cityId": 7
+      },
+      {
+        "fans": 1048,
+        "cityId": 8
+      },
+      {
+        "fans": 4951,
+        "cityId": 9
+      },
+      {
+        "fans": 270591,
+        "cityId": 10
+      },
+      {
+        "fans": 584,
+        "cityId": 11
+      },
+      {
+        "fans": 590,
+        "cityId": 12
+      },
+      {
+        "fans": 593,
+        "cityId": 13
+      },
+      {
+        "fans": 547,
+        "cityId": 14
+      },
+      {
+        "fans": 887,
+        "cityId": 15
+      },
+      {
+        "fans": 376,
+        "cityId": 16
+      },
+      {
+        "fans": 343,
+        "cityId": 17
+      },
+      {
+        "fans": 307,
+        "cityId": 18
+      },
+      {
+        "fans": 123,
+        "cityId": 19
+      },
+      {
+        "fans": 247,
+        "cityId": 20
+      },
+      {
+        "fans": 97,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 9,
+    "name": "WOLFS",
+    "imgUrl": "https://i.imgur.com/spf0NN3.png",
+    "cityId": 7,
+    "currentSeries": "A",
+    "mascot": "Lobo",
+    "stadium": "Arena Lupina",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 26500,
+    "foundedYear": 2010,
+    "fans": [
+      {
+        "fans": 16578,
+        "cityId": 1
+      },
+      {
+        "fans": 26258,
+        "cityId": 2
+      },
+      {
+        "fans": 5570,
+        "cityId": 3
+      },
+      {
+        "fans": 9375,
+        "cityId": 4
+      },
+      {
+        "fans": 7025,
+        "cityId": 5
+      },
+      {
+        "fans": 2952,
+        "cityId": 6
+      },
+      {
+        "fans": 1016085,
+        "cityId": 7
+      },
+      {
+        "fans": 464,
+        "cityId": 8
+      },
+      {
+        "fans": 2195,
+        "cityId": 9
+      },
+      {
+        "fans": 249,
+        "cityId": 10
+      },
+      {
+        "fans": 259,
+        "cityId": 11
+      },
+      {
+        "fans": 262,
+        "cityId": 12
+      },
+      {
+        "fans": 263,
+        "cityId": 13
+      },
+      {
+        "fans": 243,
+        "cityId": 14
+      },
+      {
+        "fans": 393,
+        "cityId": 15
+      },
+      {
+        "fans": 167,
+        "cityId": 16
+      },
+      {
+        "fans": 152,
+        "cityId": 17
+      },
+      {
+        "fans": 136,
+        "cityId": 18
+      },
+      {
+        "fans": 55,
+        "cityId": 19
+      },
+      {
+        "fans": 110,
+        "cityId": 20
+      },
+      {
+        "fans": 43,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 10,
+    "name": "EXP",
+    "imgUrl": "https://i.imgur.com/P4aQDXQ.png",
+    "cityId": 6,
+    "currentSeries": "A",
+    "mascot": "Príncipe",
+    "stadium": "Ilha do Príncipe",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 20300,
+    "foundedYear": 2009,
+    "fans": [
+      {
+        "fans": 24688,
+        "cityId": 1
+      },
+      {
+        "fans": 39104,
+        "cityId": 2
+      },
+      {
+        "fans": 8296,
+        "cityId": 3
+      },
+      {
+        "fans": 13962,
+        "cityId": 4
+      },
+      {
+        "fans": 10462,
+        "cityId": 5
+      },
+      {
+        "fans": 462495,
+        "cityId": 6
+      },
+      {
+        "fans": 8106,
+        "cityId": 7
+      },
+      {
+        "fans": 692,
+        "cityId": 8
+      },
+      {
+        "fans": 3269,
+        "cityId": 9
+      },
+      {
+        "fans": 371,
+        "cityId": 10
+      },
+      {
+        "fans": 386,
+        "cityId": 11
+      },
+      {
+        "fans": 390,
+        "cityId": 12
+      },
+      {
+        "fans": 392,
+        "cityId": 13
+      },
+      {
+        "fans": 361,
+        "cityId": 14
+      },
+      {
+        "fans": 586,
+        "cityId": 15
+      },
+      {
+        "fans": 248,
+        "cityId": 16
+      },
+      {
+        "fans": 227,
+        "cityId": 17
+      },
+      {
+        "fans": 202,
+        "cityId": 18
+      },
+      {
+        "fans": 81,
+        "cityId": 19
+      },
+      {
+        "fans": 163,
+        "cityId": 20
+      },
+      {
+        "fans": 64,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 11,
+    "name": "ALVORADA",
+    "imgUrl": "https://i.imgur.com/8U1HFnT.png",
+    "cityId": 9,
+    "currentSeries": "B",
+    "mascot": "Sol",
+    "stadium": "Estádio Alvorecer",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 15500,
+    "foundedYear": 2000,
+    "fans": [
+      {
+        "fans": 26698,
+        "cityId": 1
+      },
+      {
+        "fans": 42287,
+        "cityId": 2
+      },
+      {
+        "fans": 8971,
+        "cityId": 3
+      },
+      {
+        "fans": 15098,
+        "cityId": 4
+      },
+      {
+        "fans": 11313,
+        "cityId": 5
+      },
+      {
+        "fans": 4755,
+        "cityId": 6
+      },
+      {
+        "fans": 8765,
+        "cityId": 7
+      },
+      {
+        "fans": 748,
+        "cityId": 8
+      },
+      {
+        "fans": 503152,
+        "cityId": 9
+      },
+      {
+        "fans": 402,
+        "cityId": 10
+      },
+      {
+        "fans": 417,
+        "cityId": 11
+      },
+      {
+        "fans": 421,
+        "cityId": 12
+      },
+      {
+        "fans": 424,
+        "cityId": 13
+      },
+      {
+        "fans": 391,
+        "cityId": 14
+      },
+      {
+        "fans": 633,
+        "cityId": 15
+      },
+      {
+        "fans": 268,
+        "cityId": 16
+      },
+      {
+        "fans": 245,
+        "cityId": 17
+      },
+      {
+        "fans": 219,
+        "cityId": 18
+      },
+      {
+        "fans": 88,
+        "cityId": 19
+      },
+      {
+        "fans": 177,
+        "cityId": 20
+      },
+      {
+        "fans": 69,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 12,
+    "name": "SCHALK",
+    "imgUrl": "https://i.imgur.com/BxTaiof.png",
+    "cityId": 10,
+    "currentSeries": "A",
+    "mascot": "Porco Espinho",
+    "stadium": "Azul da Colina",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 25500,
+    "foundedYear": 2012,
+    "fans": [
+      {
+        "fans": 58271,
+        "cityId": 1
+      },
+      {
+        "fans": 92294,
+        "cityId": 2
+      },
+      {
+        "fans": 19579,
+        "cityId": 3
+      },
+      {
+        "fans": 32953,
+        "cityId": 4
+      },
+      {
+        "fans": 24692,
+        "cityId": 5
+      },
+      {
+        "fans": 10377,
+        "cityId": 6
+      },
+      {
+        "fans": 19131,
+        "cityId": 7
+      },
+      {
+        "fans": 1633,
+        "cityId": 8
+      },
+      {
+        "fans": 7716,
+        "cityId": 9
+      },
+      {
+        "fans": 108239,
+        "cityId": 10
+      },
+      {
+        "fans": 911,
+        "cityId": 11
+      },
+      {
+        "fans": 920,
+        "cityId": 12
+      },
+      {
+        "fans": 925,
+        "cityId": 13
+      },
+      {
+        "fans": 853,
+        "cityId": 14
+      },
+      {
+        "fans": 1382,
+        "cityId": 15
+      },
+      {
+        "fans": 586,
+        "cityId": 16
+      },
+      {
+        "fans": 535,
+        "cityId": 17
+      },
+      {
+        "fans": 478,
+        "cityId": 18
+      },
+      {
+        "fans": 192,
+        "cityId": 19
+      },
+      {
+        "fans": 385,
+        "cityId": 20
+      },
+      {
+        "fans": 151,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 13,
+    "name": "ATHLETIC SILVER",
+    "imgUrl": "https://i.imgur.com/SQlUxqe.png",
+    "cityId": 8,
+    "currentSeries": "A",
+    "mascot": "Guerreiro de Prata",
+    "stadium": "Estádio da Prata/Silveirão",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14300,
+    "foundedYear": 2008,
+    "fans": [
+      {
+        "fans": 154978,
+        "cityId": 8
+      }
+    ]
+  },
+  {
+    "_id": 14,
+    "name": "ENERGY",
+    "imgUrl": "https://i.imgur.com/3Kvc7xH.png",
+    "cityId": 19,
+    "currentSeries": "A",
+    "mascot": "Raio",
+    "stadium": "Energão",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 20000,
+    "foundedYear": 2008,
+    "fans": [
+      {
+        "fans": 80214,
+        "cityId": 1
+      },
+      {
+        "fans": 127051,
+        "cityId": 2
+      },
+      {
+        "fans": 26953,
+        "cityId": 3
+      },
+      {
+        "fans": 45362,
+        "cityId": 4
+      },
+      {
+        "fans": 33990,
+        "cityId": 5
+      },
+      {
+        "fans": 14285,
+        "cityId": 6
+      },
+      {
+        "fans": 26336,
+        "cityId": 7
+      },
+      {
+        "fans": 2247,
+        "cityId": 8
+      },
+      {
+        "fans": 10622,
+        "cityId": 9
+      },
+      {
+        "fans": 1206,
+        "cityId": 10
+      },
+      {
+        "fans": 1254,
+        "cityId": 11
+      },
+      {
+        "fans": 1266,
+        "cityId": 12
+      },
+      {
+        "fans": 1273,
+        "cityId": 13
+      },
+      {
+        "fans": 1174,
+        "cityId": 14
+      },
+      {
+        "fans": 1903,
+        "cityId": 15
+      },
+      {
+        "fans": 807,
+        "cityId": 16
+      },
+      {
+        "fans": 737,
+        "cityId": 17
+      },
+      {
+        "fans": 658,
+        "cityId": 18
+      },
+      {
+        "fans": 61179,
+        "cityId": 19
+      },
+      {
+        "fans": 531,
+        "cityId": 20
+      },
+      {
+        "fans": 208,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 15,
+    "name": "SKY",
+    "imgUrl": "https://i.imgur.com/n2yXBQA.png",
+    "cityId": 12,
+    "currentSeries": "A",
+    "mascot": "Falcão",
+    "stadium": "Arena Sky",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 20000,
+    "foundedYear": 2004,
+    "fans": [
+      {
+        "fans": 22764,
+        "cityId": 1
+      },
+      {
+        "fans": 36055,
+        "cityId": 2
+      },
+      {
+        "fans": 7649,
+        "cityId": 3
+      },
+      {
+        "fans": 12873,
+        "cityId": 4
+      },
+      {
+        "fans": 9646,
+        "cityId": 5
+      },
+      {
+        "fans": 4054,
+        "cityId": 6
+      },
+      {
+        "fans": 7474,
+        "cityId": 7
+      },
+      {
+        "fans": 638,
+        "cityId": 8
+      },
+      {
+        "fans": 3014,
+        "cityId": 9
+      },
+      {
+        "fans": 342,
+        "cityId": 10
+      },
+      {
+        "fans": 356,
+        "cityId": 11
+      },
+      {
+        "fans": 158630,
+        "cityId": 12
+      },
+      {
+        "fans": 361,
+        "cityId": 13
+      },
+      {
+        "fans": 333,
+        "cityId": 14
+      },
+      {
+        "fans": 540,
+        "cityId": 15
+      },
+      {
+        "fans": 229,
+        "cityId": 16
+      },
+      {
+        "fans": 209,
+        "cityId": 17
+      },
+      {
+        "fans": 187,
+        "cityId": 18
+      },
+      {
+        "fans": 75,
+        "cityId": 19
+      },
+      {
+        "fans": 151,
+        "cityId": 20
+      },
+      {
+        "fans": 59,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 16,
+    "name": "FENIX",
+    "imgUrl": "https://i.imgur.com/pyNPJEq.png",
+    "cityId": 14,
+    "currentSeries": "B",
+    "mascot": "Fênix de Fogo",
+    "stadium": "Estádio do Fogo",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14000,
+    "foundedYear": 1993,
+    "fans": [
+      {
+        "fans": 13978,
+        "cityId": 1
+      },
+      {
+        "fans": 22140,
+        "cityId": 2
+      },
+      {
+        "fans": 4697,
+        "cityId": 3
+      },
+      {
+        "fans": 7905,
+        "cityId": 4
+      },
+      {
+        "fans": 5923,
+        "cityId": 5
+      },
+      {
+        "fans": 2489,
+        "cityId": 6
+      },
+      {
+        "fans": 4589,
+        "cityId": 7
+      },
+      {
+        "fans": 392,
+        "cityId": 8
+      },
+      {
+        "fans": 1851,
+        "cityId": 9
+      },
+      {
+        "fans": 210,
+        "cityId": 10
+      },
+      {
+        "fans": 218,
+        "cityId": 11
+      },
+      {
+        "fans": 221,
+        "cityId": 12
+      },
+      {
+        "fans": 222,
+        "cityId": 13
+      },
+      {
+        "fans": 127394,
+        "cityId": 14
+      },
+      {
+        "fans": 332,
+        "cityId": 15
+      },
+      {
+        "fans": 141,
+        "cityId": 16
+      },
+      {
+        "fans": 128,
+        "cityId": 17
+      },
+      {
+        "fans": 115,
+        "cityId": 18
+      },
+      {
+        "fans": 46,
+        "cityId": 19
+      },
+      {
+        "fans": 92,
+        "cityId": 20
+      },
+      {
+        "fans": 36,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 17,
+    "name": "WINNERS",
+    "imgUrl": "https://i.imgur.com/LLACPmh.png",
+    "cityId": 13,
+    "currentSeries": "A",
+    "mascot": "Leão",
+    "stadium": "Arena Triunfo",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 15400,
+    "foundedYear": 2010,
+    "fans": [
+      {
+        "fans": 37300,
+        "cityId": 1
+      },
+      {
+        "fans": 59079,
+        "cityId": 2
+      },
+      {
+        "fans": 12533,
+        "cityId": 3
+      },
+      {
+        "fans": 21093,
+        "cityId": 4
+      },
+      {
+        "fans": 15805,
+        "cityId": 5
+      },
+      {
+        "fans": 6643,
+        "cityId": 6
+      },
+      {
+        "fans": 12246,
+        "cityId": 7
+      },
+      {
+        "fans": 1045,
+        "cityId": 8
+      },
+      {
+        "fans": 4939,
+        "cityId": 9
+      },
+      {
+        "fans": 561,
+        "cityId": 10
+      },
+      {
+        "fans": 583,
+        "cityId": 11
+      },
+      {
+        "fans": 589,
+        "cityId": 12
+      },
+      {
+        "fans": 151209,
+        "cityId": 13
+      },
+      {
+        "fans": 546,
+        "cityId": 14
+      },
+      {
+        "fans": 885,
+        "cityId": 15
+      },
+      {
+        "fans": 375,
+        "cityId": 16
+      },
+      {
+        "fans": 343,
+        "cityId": 17
+      },
+      {
+        "fans": 306,
+        "cityId": 18
+      },
+      {
+        "fans": 123,
+        "cityId": 19
+      },
+      {
+        "fans": 247,
+        "cityId": 20
+      },
+      {
+        "fans": 97,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 18,
+    "name": "FEROCITY",
+    "imgUrl": "https://i.imgur.com/38n4yVN.png",
+    "cityId": 3,
+    "currentSeries": "C",
+    "mascot": "Tigre",
+    "stadium": "Estádio da Fera",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 24500,
+    "foundedYear": 1997,
+    "fans": [
+      {
+        "fans": 103667,
+        "cityId": 3
+      }
+    ]
+  },
+  {
+    "_id": 19,
+    "name": "TWISTER",
+    "imgUrl": "https://i.imgur.com/b2uhCKM.png",
+    "cityId": 21,
+    "currentSeries": "A",
+    "mascot": "Tornardo",
+    "stadium": "Vortex Stadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14100,
+    "foundedYear": 2010,
+    "fans": [
+      {
+        "fans": 30215,
+        "cityId": 1
+      },
+      {
+        "fans": 47858,
+        "cityId": 2
+      },
+      {
+        "fans": 10153,
+        "cityId": 3
+      },
+      {
+        "fans": 17087,
+        "cityId": 4
+      },
+      {
+        "fans": 12803,
+        "cityId": 5
+      },
+      {
+        "fans": 5381,
+        "cityId": 6
+      },
+      {
+        "fans": 9920,
+        "cityId": 7
+      },
+      {
+        "fans": 847,
+        "cityId": 8
+      },
+      {
+        "fans": 4001,
+        "cityId": 9
+      },
+      {
+        "fans": 454,
+        "cityId": 10
+      },
+      {
+        "fans": 472,
+        "cityId": 11
+      },
+      {
+        "fans": 477,
+        "cityId": 12
+      },
+      {
+        "fans": 480,
+        "cityId": 13
+      },
+      {
+        "fans": 442,
+        "cityId": 14
+      },
+      {
+        "fans": 717,
+        "cityId": 15
+      },
+      {
+        "fans": 304,
+        "cityId": 16
+      },
+      {
+        "fans": 277,
+        "cityId": 17
+      },
+      {
+        "fans": 248,
+        "cityId": 18
+      },
+      {
+        "fans": 99,
+        "cityId": 19
+      },
+      {
+        "fans": 200,
+        "cityId": 20
+      },
+      {
+        "fans": 56590,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 20,
+    "name": "VEXA",
+    "imgUrl": "https://i.imgur.com/I7Ea9sB.png",
+    "cityId": 1,
+    "currentSeries": "C",
+    "mascot": "Peixe",
+    "stadium": "Estádio Oceânico",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 11000,
+    "foundedYear": 1995,
+    "fans": [
+      {
+        "fans": 139193,
+        "cityId": 1
+      }
+    ]
+  },
+  {
+    "_id": 21,
+    "name": "WAYNES",
+    "imgUrl": "https://i.imgur.com/E0LHCP2.png",
+    "cityId": 5,
+    "currentSeries": "B",
+    "mascot": "Corvo",
+    "stadium": "Darkwing",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 11500,
+    "foundedYear": 2007,
+    "fans": [
+      {
+        "fans": 120220,
+        "cityId": 5
+      }
+    ]
+  },
+  {
+    "_id": 22,
+    "name": "FOX UNITED",
+    "imgUrl": "https://i.imgur.com/rjPtpVk.png",
+    "cityId": 7,
+    "currentSeries": "B",
+    "mascot": "Raposa",
+    "stadium": "Arena Lupina",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 26501,
+    "foundedYear": 2016,
+    "fans": [
+      {
+        "fans": 95634,
+        "cityId": 7
+      }
+    ]
+  },
+  {
+    "_id": 23,
+    "name": "KONIG",
+    "imgUrl": "https://i.imgur.com/JIUoGI9.png",
+    "cityId": 19,
+    "currentSeries": "A",
+    "mascot": "Leão Rei",
+    "stadium": "Arena Imperial",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 20000,
+    "foundedYear": 1995,
+    "fans": [
+      {
+        "fans": 22942,
+        "cityId": 19
+      }
+    ]
+  },
+  {
+    "_id": 24,
+    "name": "BLUE DRAGON",
+    "imgUrl": "https://i.imgur.com/dmScDi7.png",
+    "cityId": 15,
+    "currentSeries": "B",
+    "mascot": "Dragão Azul (Safira)",
+    "stadium": "Dragons Stadium",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 19000,
+    "foundedYear": 1994,
+    "fans": [
+      {
+        "fans": 94615,
+        "cityId": 15
+      }
+    ]
+  },
+  {
+    "_id": 25,
+    "name": "NICKS",
+    "imgUrl": "https://i.imgur.com/SWZ3b2a.png",
+    "cityId": 9,
+    "currentSeries": "A",
+    "mascot": "Tubarão",
+    "stadium": "Shark Stadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14400,
+    "foundedYear": 2001,
+    "fans": [
+      {
+        "fans": 89317,
+        "cityId": 9
+      }
+    ]
+  },
+  {
+    "_id": 26,
+    "name": "LORENZO",
+    "imgUrl": "https://i.imgur.com/MribEpv.png",
+    "cityId": 4,
+    "currentSeries": "B",
+    "mascot": "Javali",
+    "stadium": "Lorenzo Arena",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14000,
+    "foundedYear": 2014,
+    "fans": [
+      {
+        "fans": 82043,
+        "cityId": 4
+      }
+    ]
+  },
+  {
+    "_id": 27,
+    "name": "SYBERE CITY",
+    "imgUrl": "https://i.imgur.com/ojd0afO.png",
+    "cityId": 11,
+    "currentSeries": "B",
+    "mascot": "Tigre Branco",
+    "stadium": "Tiger Stadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 10200,
+    "foundedYear": 2015,
+    "fans": [
+      {
+        "fans": 81814,
+        "cityId": 11
+      }
+    ]
+  },
+  {
+    "_id": 28,
+    "name": "HUNTERS",
+    "imgUrl": "https://i.imgur.com/y1ACbh3.png",
+    "cityId": 11,
+    "currentSeries": "B",
+    "mascot": "Gorila Rei",
+    "stadium": "Gorilla Stadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 9000,
+    "foundedYear": 2016,
+    "fans": [
+      {
+        "fans": 79298,
+        "cityId": 11
+      }
+    ]
+  },
+  {
+    "_id": 29,
+    "name": "VERDES MARES",
+    "imgUrl": "https://i.imgur.com/3k2t5nV.png",
+    "cityId": 20,
+    "currentSeries": "A",
+    "mascot": "Crocodilo",
+    "stadium": "Jefferson Arena/Jefão",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 23000,
+    "foundedYear": 2001,
+    "fans": [
+      {
+        "fans": 25144,
+        "cityId": 1
+      },
+      {
+        "fans": 39826,
+        "cityId": 2
+      },
+      {
+        "fans": 8449,
+        "cityId": 3
+      },
+      {
+        "fans": 14219,
+        "cityId": 4
+      },
+      {
+        "fans": 10655,
+        "cityId": 5
+      },
+      {
+        "fans": 4478,
+        "cityId": 6
+      },
+      {
+        "fans": 8255,
+        "cityId": 7
+      },
+      {
+        "fans": 704,
+        "cityId": 8
+      },
+      {
+        "fans": 3330,
+        "cityId": 9
+      },
+      {
+        "fans": 378,
+        "cityId": 10
+      },
+      {
+        "fans": 393,
+        "cityId": 11
+      },
+      {
+        "fans": 397,
+        "cityId": 12
+      },
+      {
+        "fans": 399,
+        "cityId": 13
+      },
+      {
+        "fans": 368,
+        "cityId": 14
+      },
+      {
+        "fans": 597,
+        "cityId": 15
+      },
+      {
+        "fans": 253,
+        "cityId": 16
+      },
+      {
+        "fans": 231,
+        "cityId": 17
+      },
+      {
+        "fans": 206,
+        "cityId": 18
+      },
+      {
+        "fans": 83,
+        "cityId": 19
+      },
+      {
+        "fans": 57702,
+        "cityId": 20
+      },
+      {
+        "fans": 65,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 30,
+    "name": "ELDORADO",
+    "imgUrl": "https://i.imgur.com/M171Ufh.png",
+    "cityId": 17,
+    "currentSeries": "A",
+    "mascot": "Pássaro Dourado",
+    "stadium": "Ilha do Ouro",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 19900,
+    "foundedYear": 2008,
+    "fans": [
+      {
+        "fans": 15112,
+        "cityId": 1
+      },
+      {
+        "fans": 23936,
+        "cityId": 2
+      },
+      {
+        "fans": 5078,
+        "cityId": 3
+      },
+      {
+        "fans": 8546,
+        "cityId": 4
+      },
+      {
+        "fans": 6404,
+        "cityId": 5
+      },
+      {
+        "fans": 2691,
+        "cityId": 6
+      },
+      {
+        "fans": 4962,
+        "cityId": 7
+      },
+      {
+        "fans": 423,
+        "cityId": 8
+      },
+      {
+        "fans": 2001,
+        "cityId": 9
+      },
+      {
+        "fans": 227,
+        "cityId": 10
+      },
+      {
+        "fans": 236,
+        "cityId": 11
+      },
+      {
+        "fans": 238,
+        "cityId": 12
+      },
+      {
+        "fans": 240,
+        "cityId": 13
+      },
+      {
+        "fans": 221,
+        "cityId": 14
+      },
+      {
+        "fans": 359,
+        "cityId": 15
+      },
+      {
+        "fans": 152,
+        "cityId": 16
+      },
+      {
+        "fans": 49160,
+        "cityId": 17
+      },
+      {
+        "fans": 124,
+        "cityId": 18
+      },
+      {
+        "fans": 50,
+        "cityId": 19
+      },
+      {
+        "fans": 100,
+        "cityId": 20
+      },
+      {
+        "fans": 39,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 31,
+    "name": "GLASKUGEL",
+    "imgUrl": "https://i.imgur.com/zUlr7RX.png",
+    "cityId": 2,
+    "currentSeries": "C",
+    "mascot": "Urso de Vidro",
+    "stadium": "Glasstadium",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 12000,
+    "foundedYear": 2017,
+    "fans": [
+      {
+        "fans": 35071,
+        "cityId": 2
+      }
+    ]
+  },
+  {
+    "_id": 32,
+    "name": "INGRAN",
+    "imgUrl": "https://i.imgur.com/v4vfHk6.png",
+    "cityId": 16,
+    "currentSeries": "B",
+    "mascot": "Árvore",
+    "stadium": "Estádio Verde",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 9400,
+    "foundedYear": 2002,
+    "fans": [
+      {
+        "fans": 20334,
+        "cityId": 1
+      },
+      {
+        "fans": 32207,
+        "cityId": 2
+      },
+      {
+        "fans": 6833,
+        "cityId": 3
+      },
+      {
+        "fans": 11499,
+        "cityId": 4
+      },
+      {
+        "fans": 8616,
+        "cityId": 5
+      },
+      {
+        "fans": 3621,
+        "cityId": 6
+      },
+      {
+        "fans": 6676,
+        "cityId": 7
+      },
+      {
+        "fans": 570,
+        "cityId": 8
+      },
+      {
+        "fans": 2693,
+        "cityId": 9
+      },
+      {
+        "fans": 306,
+        "cityId": 10
+      },
+      {
+        "fans": 318,
+        "cityId": 11
+      },
+      {
+        "fans": 321,
+        "cityId": 12
+      },
+      {
+        "fans": 323,
+        "cityId": 13
+      },
+      {
+        "fans": 297,
+        "cityId": 14
+      },
+      {
+        "fans": 482,
+        "cityId": 15
+      },
+      {
+        "fans": 48053,
+        "cityId": 16
+      },
+      {
+        "fans": 187,
+        "cityId": 17
+      },
+      {
+        "fans": 167,
+        "cityId": 18
+      },
+      {
+        "fans": 67,
+        "cityId": 19
+      },
+      {
+        "fans": 135,
+        "cityId": 20
+      },
+      {
+        "fans": 53,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 33,
+    "name": "CELTIKS",
+    "imgUrl": "https://i.imgur.com/nZCiKNU.png",
+    "cityId": 18,
+    "currentSeries": "C",
+    "mascot": "Trevo da Sorte",
+    "stadium": "Trevo Arena",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 9500,
+    "foundedYear": 2004,
+    "fans": [
+      {
+        "fans": 45982,
+        "cityId": 18
+      }
+    ]
+  },
+  {
+    "_id": 34,
+    "name": "BLACK GOLD",
+    "imgUrl": "https://i.imgur.com/W88JN4d.png",
+    "cityId": 17,
+    "currentSeries": "A",
+    "mascot": "Águia Dourada",
+    "stadium": "Ouro Negro Stadium",
+    "stadiumQuality": "EXCELENTE",
+    "stadiumCapacity": 30000,
+    "foundedYear": 2013,
+    "fans": [
+      {
+        "fans": 14966,
+        "cityId": 1
+      },
+      {
+        "fans": 23705,
+        "cityId": 2
+      },
+      {
+        "fans": 5029,
+        "cityId": 3
+      },
+      {
+        "fans": 8464,
+        "cityId": 4
+      },
+      {
+        "fans": 6342,
+        "cityId": 5
+      },
+      {
+        "fans": 2665,
+        "cityId": 6
+      },
+      {
+        "fans": 4914,
+        "cityId": 7
+      },
+      {
+        "fans": 419,
+        "cityId": 8
+      },
+      {
+        "fans": 1982,
+        "cityId": 9
+      },
+      {
+        "fans": 225,
+        "cityId": 10
+      },
+      {
+        "fans": 234,
+        "cityId": 11
+      },
+      {
+        "fans": 236,
+        "cityId": 12
+      },
+      {
+        "fans": 238,
+        "cityId": 13
+      },
+      {
+        "fans": 219,
+        "cityId": 14
+      },
+      {
+        "fans": 355,
+        "cityId": 15
+      },
+      {
+        "fans": 150,
+        "cityId": 16
+      },
+      {
+        "fans": 43016,
+        "cityId": 17
+      },
+      {
+        "fans": 123,
+        "cityId": 18
+      },
+      {
+        "fans": 49,
+        "cityId": 19
+      },
+      {
+        "fans": 99,
+        "cityId": 20
+      },
+      {
+        "fans": 39,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 35,
+    "name": "ZIN",
+    "imgUrl": "https://i.imgur.com/fxBjISv.png",
+    "cityId": 16,
+    "currentSeries": "B",
+    "mascot": "Carcará",
+    "stadium": "Zinstadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 10500,
+    "foundedYear": 2004,
+    "fans": [
+      {
+        "fans": 40463,
+        "cityId": 16
+      }
+    ]
+  },
+  {
+    "_id": 36,
+    "name": "DUKE",
+    "imgUrl": "https://i.imgur.com/0a15xHK.png",
+    "cityId": 18,
+    "currentSeries": "C",
+    "mascot": "Escudeiro",
+    "stadium": "Trevo Arena",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 9501,
+    "foundedYear": 2006,
+    "fans": [
+      {
+        "fans": 38526,
+        "cityId": 18
+      }
+    ]
+  },
+  {
+    "_id": 37,
+    "name": "THEUSS",
+    "imgUrl": "https://i.imgur.com/ut1RBpL.png",
+    "cityId": 21,
+    "currentSeries": "B",
+    "mascot": "Coiote",
+    "stadium": "Estádio Wuster",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 14900,
+    "foundedYear": 1997,
+    "fans": [
+      {
+        "fans": 12864,
+        "cityId": 21
+      }
+    ]
+  },
+  {
+    "_id": 38,
+    "name": "VAMPS",
+    "imgUrl": "https://i.imgur.com/BNQIOjm.png",
+    "cityId": 14,
+    "currentSeries": "B",
+    "mascot": "Morcego",
+    "stadium": "Batstadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 10000,
+    "foundedYear": 2005,
+    "fans": [
+      {
+        "fans": 21565,
+        "cityId": 14
+      }
+    ]
+  },
+  {
+    "_id": 39,
+    "name": "CHERIFES",
+    "imgUrl": "https://i.imgur.com/hBDJ5dt.png",
+    "cityId": 1,
+    "currentSeries": "C",
+    "mascot": "Xerife",
+    "stadium": "Estádio Oceânico",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 11000,
+    "foundedYear": 2008,
+    "fans": [
+      {
+        "fans": 26514,
+        "cityId": 1
+      }
+    ]
+  },
+  {
+    "_id": 40,
+    "name": "VILLA",
+    "imgUrl": "https://i.imgur.com/zjLQcaz.png",
+    "cityId": 15,
+    "currentSeries": "C",
+    "mascot": "Avestruz",
+    "stadium": "Estádio da Villa",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 9000,
+    "foundedYear": 1997,
+    "fans": [
+      {
+        "fans": 14069,
+        "cityId": 15
+      }
+    ]
+  },
+  {
+    "_id": 41,
+    "name": "ZINK",
+    "imgUrl": "https://i.imgur.com/iH88Yyj.png",
+    "cityId": 16,
+    "currentSeries": "C",
+    "mascot": "Cobra Verde",
+    "stadium": "Zinstadium",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 10501,
+    "foundedYear": 2006,
+    "fans": [
+      {
+        "fans": 12645,
+        "cityId": 16
+      }
+    ]
+  },
+  {
+    "_id": 42,
+    "name": "ROYAL DETROIT",
+    "imgUrl": "https://i.imgur.com/lJ2DkdI.png",
+    "cityId": 20,
+    "currentSeries": "B",
+    "mascot": "Gato",
+    "stadium": "Royal Arena",
+    "stadiumQuality": "BOM",
+    "stadiumCapacity": 8500,
+    "foundedYear": 2014,
+    "fans": [
+      {
+        "fans": 8979,
+        "cityId": 20
+      }
+    ]
+  },
+  {
+    "_id": 43,
+    "name": "THE BOYS",
+    "imgUrl": "https://i.imgur.com/C0S4IgB.png",
+    "cityId": 1,
+    "currentSeries": "C",
+    "mascot": "Garoto",
+    "stadium": "Estádio Oceânico",
+    "stadiumQuality": "REGULAR",
+    "stadiumCapacity": 11000,
+    "foundedYear": 2007,
+    "fans": [
+      {
+        "fans": 7956,
+        "cityId": 1
+      }
+    ]
+  },
+  {
+    "_id": 44,
+    "name": "WIZARDS",
+    "imgUrl": "https://i.imgur.com/6E8JAK9.png",
+    "cityId": 13,
+    "currentSeries": "C",
+    "mascot": "Golfinho",
+    "stadium": "Arena Triunfo",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 15400,
+    "foundedYear": 2011,
+    "fans": [
+      {
+        "fans": 7060,
+        "cityId": 13
+      }
+    ]
+  },
+  {
+    "_id": 45,
+    "name": "FORTUNA",
+    "imgUrl": "https://i.imgur.com/7vlHuCi.png",
+    "cityId": 2,
+    "currentSeries": "C",
+    "mascot": "Ave Dourada",
+    "stadium": "Glasstadium",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 12000,
+    "foundedYear": 2021,
+    "fans": [
+      {
+        "fans": 3598,
+        "cityId": 2
+      }
+    ]
+  },
+  {
+    "_id": 46,
+    "name": "AVANTI",
+    "imgUrl": "https://i.imgur.com/o55k4p3.png",
+    "cityId": 2,
+    "currentSeries": "B",
+    "mascot": "Papagaio",
+    "stadium": "Glasstadium",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 12000,
+    "foundedYear": 2016,
+    "fans": [
+      {
+        "fans": 1801,
+        "cityId": 2
+      }
+    ]
+  },
+  {
+    "_id": 47,
+    "name": "BERKSHIRE BLUES",
+    "imgUrl": "https://i.imgur.com/dFEw4kW.png",
+    "cityId": 12,
+    "currentSeries": "B",
+    "mascot": "Porco Azul",
+    "stadium": "Blue Arena",
+    "stadiumQuality": "RUIM",
+    "stadiumCapacity": 7500,
+    "foundedYear": 2015,
+    "fans": [
+      {
+        "fans": 797,
+        "cityId": 12
+      }
+    ]
+  },
+  {
+    "_id": 48,
+    "name": "WINCHESTERS",
+    "imgUrl": "https://i.imgur.com/hhcyFOZ.png",
+    "cityId": 16,
+    "currentSeries": "C",
+    "mascot": "Caveira",
+    "stadium": "Estádio Verde",
+    "stadiumQuality": "ÓTIMO",
+    "stadiumCapacity": 9400,
+    "foundedYear": 2020,
+    "fans": [
+      {
+        "fans": 635,
+        "cityId": 16
+      }
+    ]
+  }
+]
