@@ -57,23 +57,43 @@ const QualityMultiplier = Object.freeze({
   EXCELENTE: 1.5
 });
 
-// Elasticidades por setor (constantes k fornecidas) - recalibradas para maior sensibilidade
+// Elasticidades por setor (valores base para importancia = 1.0)
 const SectorElasticity = Object.freeze({
-  popular: 6,       // Aumentado de 2.0. Torcida popular não aceita aumento.
-  intermediario: 2.5, // Aumentado de 1.2. Classe média sensível.
-  premium: 2,       // Aumentado de 0.7. Rico aceita pagar, mas não o dobro.
-  camarote: 1.8,      // Aumentado de 0.3. Corporativo ainda é inelástico.
-  visitante: 2.5      // Acompanha o intermediário.
+  popular: 2.8,
+  intermediario: 1.5,
+  premium: 1.1,
+  camarote: 0.6,
+  visitante: 1.5
 });
 
 // Pesos de Interesse da Torcida (w) - Representa a vontade natural da torcida por cada setor
+// Reequilíbrio para estádios de elite: maior propensão a setores superiores em jogos importantes
 const InterestWeights = Object.freeze({
-  popular: 0.60,
-  intermediario: 0.25,
-  premium: 0.10,
+  popular: 1.0,
+  intermediario: 0.6,
+  premium: 0.25,
   camarote: 0.05,
   visitante: 1.0 // Calculado à parte
 });
+
+// Multiplicador de atratividade do adversário por Série (influencia público visitante/geral)
+const SeriesMultiplier = Object.freeze({
+  A: 1.2,
+  B: 0.6,
+  C: 0.3
+});
+
+// Matriz de prestígio do confronto (MandanteSerie+VisitanteSerie)
+const PrestigeMatrix = {
+  AA: 1.5, AB: 0.7, AC: 0.4,
+  BA: 1.5, BB: 1.0, BC: 0.6,
+  CA: 2.2, CB: 1.3, CC: 0.8
+};
+
+function getMatchAptitude(homeSerie, awaySerie) {
+  const key = ((homeSerie || '') + (awaySerie || '')).toUpperCase();
+  return PrestigeMatrix[key] || 0.5;
+}
 
 /**
  * Normaliza uma string de qualidade removendo acentos e formatando para uppercase
@@ -155,7 +175,7 @@ function calculateSectorDistribution(totalCapacity, quality) {
  *
  * Retorna um número >= 0 (não arredonda internamente; o chamador decide arredondar ou limitar)
  */
-function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor = 1, precoBase = 1, precoAtual = 1, sector = 'popular' } = {}) {
+function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor = 1, precoBase = 1, precoAtual = 1, sector = 'popular', atratividadeAdversario = 1 } = {}) {
   // Validações básicas
   if (precoAtual <= 0) {
     throw new Error('precoAtual deve ser > 0');
@@ -166,25 +186,36 @@ function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor
     throw new Error(`Setor desconhecido para elasticidade: ${sector}`);
   }
 
-  const baseComponent = torcidaBase * fase * importancia * pesoSetor;
+  let baseComponent = torcidaBase * fase * importancia * pesoSetor * atratividadeAdversario;
+
+  // Camarote: comportamento exclusivo — muito sensível ao evento
+  if (sector === 'camarote') {
+    baseComponent = baseComponent * Math.pow(importancia, 2);
+  }
 
   // Razão de Preço (Base / Atual)
   // Se Preço Atual é o dobro do Base, ratio é 0.5
   const ratio = precoBase / precoAtual;
-  
-  // Fator de Penalidade Extra para Preços Abusivos
-  // Se o preço cobrado for mais que o dobro do base (ratio < 0.5), puna a demanda
+  // Ajuste dinâmico da elasticidade com base na importância
+  // Quanto maior a importância, menor a sensibilidade (elasticidade reduz).
+  // Usamos 1 / sqrt(importancia) para criar uma relação inversa suave.
+  const dynamicElasticity = elasticity * (1 / Math.sqrt(Math.max(0.001, importancia)));
+
+  // Penalidade anti-abuso (suavizada): somente aplica quando o preço ultrapassa um limiar
+  // Se ratio >= 0.45 (preço até ~2.22x o base), penalty = 1 (neutro).
+  // Se ratio < 0.45, aplicamos uma redução exponencial suave para desincentivar abusos.
   let penalty = 1.0;
-  if (ratio < 0.5) { 
-     // Ex: Se cobrar 3x o preço (ratio 0.33), penalty será ~0.55
-     penalty = Math.pow(ratio * 2, 2); 
+  if (ratio < 0.45) {
+    // expoente negativo para reduzir a demanda conforme o ratio diminui
+    // parâmetro 4 faz a curva cair de forma adequada (ajustável)
+    penalty = Math.exp((ratio - 0.45) * 4);
   }
 
-  // Aplica a elasticidade E a penalidade
-  const demand = baseComponent * Math.pow(ratio, elasticity) * penalty;
+  // Aplica a elasticidade dinâmica e a penalidade
+  const demand = baseComponent * Math.pow(ratio, dynamicElasticity) * penalty;
 
-  // Demanda não pode ser negativa (proteção extra)
-  return Math.max(0, demand);
+  // Retorna objeto com demanda calculada e elasticidade efetiva para auditoria
+  return { demand: Math.max(0, demand), dynamicElasticity };
 }
 
 /**
@@ -202,10 +233,13 @@ if (typeof window !== 'undefined') {
   window.Logic.calculateSectorDistribution = calculateSectorDistribution;
   window.Logic.calculateDemand = calculateDemand;
   window.Logic.SectorElasticity = SectorElasticity;
+  window.Logic.SeriesMultiplier = SeriesMultiplier;
+  window.Logic.PrestigeMatrix = PrestigeMatrix;
+  window.Logic.getMatchAptitude = getMatchAptitude;
   window.Logic.normalizeQuality = normalizeQuality;
-  window.Logic.getQualityMultiplier = getQualityMultiplier; // NOVO
-  window.Logic.QualityMultiplier = QualityMultiplier; // NOVO
-  window.Logic.InterestWeights = InterestWeights; // NOVO
+  window.Logic.getQualityMultiplier = getQualityMultiplier;
+  window.Logic.QualityMultiplier = QualityMultiplier;
+  window.Logic.InterestWeights = InterestWeights;
 }
 
 // Exports (para ambientes module-aware, caso futuramente migremos)

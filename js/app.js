@@ -16,10 +16,10 @@ const STD_PRICES = Object.freeze({
 });
 
 // Custo Fixo Base (para estádio BOM)
-const STD_FIXED_COST = 250000;
+const STD_FIXED_COST = 50000;
 
 // Custo Variável Base por Torcedor (para estádio BOM - Multiplicador 1.0)
-const STD_VARIABLE_COST = 20;
+const STD_VARIABLE_COST = 10;
 
 // Momento do time (últimos 5 jogos geral e casa) -> valores possíveis: 3 (V), 1 (E), 0 (D)
 let last5General = [1,1,1,1,1];
@@ -30,13 +30,42 @@ let last5VisitorGeneral = [1,1,1,1,1];
 let last5VisitorAway = [1,1,1,1,1];
 
 /**
- * Alterna o estado cíclico: 3 (Vitória) => 1 (Empate) => 0 (Derrota) => 3 ...
+ * Determina a faixa de engajamento com base no total de fãs
  */
-function cycleResult(value) {
-  if (value === 3) return 1;
-  if (value === 1) return 0;
-  return 3;
+function getEngagementBand(totalFans) {
+  if (totalFans <= 5000) return { name: 'Micro', color: 'success', multiplier: '1.0 (100%)' };
+  if (totalFans <= 10000) return { name: 'Pequeno', color: 'info', multiplier: '0.85 (85%)' };
+  if (totalFans <= 50000) return { name: 'Médio', color: 'warning', multiplier: '0.65 (65%)' };
+  if (totalFans <= 100000) return { name: 'Grande', color: 'warning', multiplier: '0.45 (45%)' };
+  if (totalFans <= 300000) return { name: 'Gigante', color: 'danger', multiplier: '0.2 (20%)' };
+  if (totalFans <= 500000) return { name: 'Monumental', color: 'danger', multiplier: '0.1 (10%)' };
+  return { name: 'Colossal', color: 'danger', multiplier: '0.03 (3%)' };
 }
+
+/**
+ * Retorna o ícone do setor
+ */
+function getSectorIcon(sectorKey) {
+  const iconMap = {
+    popular: 'bi-people-fill',
+    intermediario: 'bi-person-badge',
+    premium: 'bi-star-fill',
+    camarote: 'bi-gem'
+  };
+  return iconMap[sectorKey] || 'bi-ticket-fill';
+}
+
+/**
+ * Formata um número com classe de cor baseada em valor/limite
+ */
+function formatNumberColored(value, max) {
+  const pct = (value / max) * 100;
+  if (pct >= 95) return `<span class="text-success fw-bold">${formatNumber(value)}</span>`;
+  if (pct >= 80) return `<span class="text-info">${formatNumber(value)}</span>`;
+  if (pct >= 50) return `<span class="text-warning">${formatNumber(value)}</span>`;
+  return `<span class="text-secondary">${formatNumber(value)}</span>`;
+}
+
 
 /**
  * Calcula o fator de fase com base nas arrays last5General e last5Home
@@ -189,33 +218,39 @@ function sumTeamFans(team) {
 }
 
 /**
- * Curva de Engajamento Ajustada (Mais Permissiva)
- * - Núcleo Duro (até 30k): 15% (Aumentou teto de 20k -> 30k)
- * - Torcida Ativa (30k a 300k): 4% (Aumentou taxa de 2.5% -> 4%)
- * - Massa (Acima de 300k): 0.8% (Aumentou taxa de 0.5% -> 0.8%)
+ * Curva de Engajamento Dinâmica
+ * Times pequenos tém engajamento altíssimo (fidelidade local).
+ * Times grandes tém engajamento menor (massa mais dispersa).
  */
 function calculateEffectiveFanBase(totalFans) {
-  let effective = 0;
-  let remaining = Number(totalFans) || 0;
+  const fans = Number(totalFans) || 0;
+  if (fans <= 0) return 0;
 
-  // Faixa 1: Núcleo Duro (Expandido para 30k)
-  const tier1 = Math.min(remaining, 30000);
-  effective += tier1 * 0.15;
-  remaining -= tier1;
-
-  // Faixa 2: Torcida Ativa (Expandido para até 300k)
-  if (remaining > 0) {
-    const tier2 = Math.min(remaining, 270000); // 300k - 30k
-    effective += tier2 * 0.04; // Taxa quase dobrada
-    remaining -= tier2;
+  let multiplier;
+  
+  if (fans <= 5000) {
+    multiplier = 1; 
+  } else if (fans <= 10000) {
+    multiplier = 0.85;
+  } else if (fans <= 50000) {
+    multiplier = 0.65;
+  } else if (fans <= 100000) {
+    multiplier = 0.45;
+  } else if (fans <= 300000) {
+    multiplier = 0.2;
+  } else if (fans <= 500000) {
+    multiplier = 0.1;
+  } else {
+    multiplier = 0.03;
   }
 
-  // Faixa 3: Massa (Engajamento de sofá)
-  if (remaining > 0) {
-    effective += remaining * 0.008; // Taxa aumentada
-  }
-
-  return Math.round(effective);
+  const calculated = Math.round(fans * multiplier);
+  
+  // Piso: se time tem >1000 fans, piso é 1000; senão, é a torcida total
+  const floor = fans > 1000 ? 1000 : fans;
+  
+  // Retorna sempre capped ao total
+  return Math.min(fans, Math.max(floor, calculated));
 }
 
 /**
@@ -438,6 +473,7 @@ function renderSectorCards(team) {
     // Progress bar item (initial)
     const progWrap = document.createElement('div');
     progWrap.className = 'mb-2';
+    progWrap.id = `progress-wrap-${sectorKey}`;
     progWrap.innerHTML = `
       <div class="d-flex justify-content-between">
         <span class="small text-muted text-capitalize">${sectorKey}</span>
@@ -473,6 +509,7 @@ function renderSectorCards(team) {
   // Also add visitor progress bar
   const visitorProg = document.createElement('div');
   visitorProg.className = 'mb-2';
+  visitorProg.id = 'progress-wrap-visitante';
   visitorProg.innerHTML = `
     <div class="d-flex justify-content-between">
       <span class="small text-muted">visitante</span>
@@ -667,6 +704,8 @@ function computeAndRender() {
   // 3. BASES DE TORCIDA
   const rawHomeFans = sumTeamFans(home); // Torcida total bruta
   const homeFanBase = calculateEffectiveFanBase(rawHomeFans); // Torcida útil após curva de engajamento
+  const activeRate = ((homeFanBase / rawHomeFans) * 100).toFixed(1);
+  console.log(`Time: ${home.name} | Torcida: ${formatNumber(rawHomeFans)} | Ativa: ${formatNumber(homeFanBase)} (${activeRate}%)`);
 
   // Exibe card explicativo da torcida (Total vs Ativa)
   try {
@@ -716,13 +755,46 @@ function computeAndRender() {
     faseVisitante = 0;
   }
 
+  // Determina séries e aptidão do confronto (prestígio)
+  const homeSerie = (home && home.currentSeries) ? home.currentSeries : 'A';
+  const awaySerie = selectedVisitor ? (selectedVisitor.currentSeries || homeSerie) : homeSerie;
+  const matchAptitude = (window.Logic && window.Logic.getMatchAptitude) ? window.Logic.getMatchAptitude(homeSerie, awaySerie) : 1.0;
+  
+  // DEBUG: Log detalhado do multiplicador de confronto
+  const matchKey = ((homeSerie || '') + (awaySerie || '')).toUpperCase();
+  console.log(`[DEBUG] Série Casa: ${homeSerie} | Série Visitante: ${awaySerie} | Chave: ${matchKey} | Multiplicador: ${matchAptitude}`);
+  
+  // Exibe badge simples perto do seletor do visitante se for Série A
+  try {
+    const selVisit = document.getElementById('select-visitante');
+    if (selVisit) {
+      let badge = document.getElementById('visitor-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.id = 'visitor-badge';
+        badge.className = 'small text-muted mt-1';
+        selVisit.parentNode.insertBefore(badge, selVisit.nextSibling);
+      }
+      if (awaySerie === 'A') {
+        badge.innerHTML = `<span class="badge bg-warning text-dark">Time de Elite (Série A)</span>`;
+      } else {
+        badge.innerHTML = '';
+      }
+    }
+  } catch (e) {}
+
   const sectors = ['popular', 'intermediario', 'premium', 'camarote'];
   let totalAttendance = 0;
   let homeAttendance = 0;
   let visitorAttendance = 0;
   let grossRevenue = 0;
 
-  // 4. LOOP DOS SETORES MANDANTES
+  // Para memória de cálculo
+  const sectorData = {};
+  let somaDemandaMandanteRaw = 0;
+  let fatorCorrecao = 1.0;
+
+  // PRIMEIRA PASSADA: Calcula demandas brutas para cada setor
   sectors.forEach(sectorKey => {
     const cap = sectorDistribution[sectorKey] || 0;
     const peso = window.Logic.InterestWeights[sectorKey] || 0;
@@ -772,47 +844,121 @@ function computeAndRender() {
 
     // Cálculo da Demanda
     let demandaRaw = 0;
+    let usedDynamicElasticity = window.Logic.SectorElasticity[sectorKey] || 1.0;
     try {
-      demandaRaw = window.Logic.calculateDemand({
+      const res = window.Logic.calculateDemand({
         torcidaBase: homeFanBase,
         fase: faseMandante,
         importancia: importancia,
         pesoSetor: peso,
         precoBase: precoBase,
         precoAtual: precoAtual,
-        sector: sectorKey
+        sector: sectorKey,
+        atratividadeAdversario: matchAptitude
       });
+      if (res && typeof res === 'object' && 'demand' in res) {
+        demandaRaw = res.demand;
+        usedDynamicElasticity = res.dynamicElasticity || usedDynamicElasticity;
+      } else {
+        demandaRaw = Number(res) || 0;
+      }
     } catch (error) {
       console.error(`Error calculating demand for ${sectorKey}:`, error);
     }
 
+    // Armazena dados para passada 2
+    sectorData[sectorKey] = {
+      cap, peso, precoBase, precoAtual, demandaRaw, usedDynamicElasticity
+    };
+    
+    somaDemandaMandanteRaw += demandaRaw;
+  });
+
+  // NORMALIZAÇÃO: Se soma ultrapassa homeFanBase, aplica fator de correção
+  if (somaDemandaMandanteRaw > homeFanBase && somaDemandaMandanteRaw > 0) {
+    fatorCorrecao = homeFanBase / somaDemandaMandanteRaw;
+  }
+
+  // SEGUNDA PASSADA: Aplica correção e renderiza
+  sectors.forEach(sectorKey => {
+    const { cap, peso, precoBase, precoAtual, demandaRaw: demandaRawOrig, usedDynamicElasticity } = sectorData[sectorKey];
+
+    // Aplica fator de correção
+    const demandaRaw = demandaRawOrig * fatorCorrecao;
     const publicoFinal = Math.min(cap, Math.round(demandaRaw));
     
     totalAttendance += publicoFinal;
     homeAttendance += publicoFinal;
     grossRevenue += publicoFinal * precoAtual;
 
-    // Atualiza Barra
+    // Atualiza Barra e cria div expansível com detalhes
     updateProgressBar(sectorKey, publicoFinal, cap);
 
-    // Preenche título da barra com explicação matemática (auditável)
     try {
+      const progWrap = document.getElementById(`progress-wrap-${sectorKey}`);
+      if (progWrap) {
+        // Remove a div de detalhes antiga se existir
+        let detailsDiv = progWrap.querySelector('.demand-details');
+        if (detailsDiv) {
+          detailsDiv.remove();
+        }
+        
+        // Cria nova div de detalhes
+        detailsDiv = document.createElement('div');
+        detailsDiv.className = 'demand-details';
+        
+        const elasticity = usedDynamicElasticity || window.Logic.SectorElasticity[sectorKey] || 1.0;
+        const priceRatio = precoBase / precoAtual;
+        const fatorPreco = Math.pow(priceRatio, elasticity).toFixed(2);
+        const demandaPotencial = Math.round(homeFanBase * peso * faseMandante * importancia);
+        
+        const toggleDiv = document.createElement('div');
+        toggleDiv.className = 'small text-muted cursor-pointer d-flex justify-content-between align-items-center mt-1';
+        toggleDiv.innerHTML = `<span>Detalhes do cálculo</span><i class="bi bi-chevron-down"></i>`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'mt-1 text-light small p-2 bg-dark border border-secondary-50 d-none';
+        contentDiv.style.fontSize = '0.85rem';
+        contentDiv.innerHTML = `
+          <strong>Potencial:</strong> ${formatNumber(demandaPotencial)} pessoas<br>
+          (Base: ${formatNumber(homeFanBase)} × Interesse: ${(peso*100).toFixed(0)}% × Fase: ${faseMandante.toFixed(2)} × Prestígio: ${matchAptitude}x)<br><br>
+          <strong>Impacto do Preço:</strong> ×${fatorPreco}<br>
+          (Sensibilidade: ${elasticity.toFixed(2)})<br><br>
+          <strong>Resultado:</strong> ${formatNumber(Math.round(demandaRaw))} ingressos (${formatNumber(publicoFinal)} ocupados de ${formatNumber(cap)})
+        `;
+        
+        detailsDiv.appendChild(toggleDiv);
+        detailsDiv.appendChild(contentDiv);
+        progWrap.appendChild(detailsDiv);
+        
+        // Adiciona event listener para toggle
+        toggleDiv.addEventListener('click', () => {
+          contentDiv.classList.toggle('d-none');
+          const icon = toggleDiv.querySelector('i');
+          icon.classList.toggle('bi-chevron-down');
+          icon.classList.toggle('bi-chevron-up');
+        });
+      }
+      
+      // Mantém tooltip também
       const bar = document.getElementById(`bar-${sectorKey}`);
       if (bar) {
-        const elasticity = window.Logic.SectorElasticity[sectorKey] || 1.0;
+        const elasticity = usedDynamicElasticity || window.Logic.SectorElasticity[sectorKey] || 1.0;
         const priceRatio = precoBase / precoAtual;
         const fatorPreco = Math.pow(priceRatio, elasticity).toFixed(2);
         const demandaPotencial = Math.round(homeFanBase * peso * faseMandante * importancia);
         const textoExplicativo = `CÁLCULO DE DEMANDA:\n` +
                                 `1. Potencial: ${formatNumber(demandaPotencial)} pessoas\n` +
                                 `   (Base: ${formatNumber(homeFanBase)} x Interesse: ${(peso*100).toFixed(0)}% x Fase: ${faseMandante.toFixed(2)})\n` +
-                                `2. Impacto do Preço: x${fatorPreco}\n` +
-                                `   (Sensibilidade do setor: ${elasticity})\n\n` +
-                                `Resultado Final: ${formatNumber(Math.round(demandaRaw))} ingressos`;
+              `2. Impacto do Preço: x${fatorPreco}\n` +
+              `   (Sensibilidade efetiva do setor: ${elasticity.toFixed(2)})\n` +
+                       `Prestígio do Confronto: ${homeSerie} vs ${awaySerie} (aptidão ${matchAptitude}x)\n\n` +
+              `Resultado Final: ${formatNumber(Math.round(demandaRaw))} ingressos`;
         bar.setAttribute('title', textoExplicativo);
       }
-    } catch (e) { }
+    } catch (e) {}
   });
+
 
   // 5. SETOR VISITANTE
   const capVis = sectorDistribution.visitante || 0;
@@ -823,34 +969,95 @@ function computeAndRender() {
   const precoAtualVis = Number.isFinite(parsedInter) ? parsedInter : precoBaseVis;
   
   // Demanda Visitante
-  const demandaVisRaw = window.Logic.calculateDemand({
-    torcidaBase: visitorDemandBase, // Base calculada (Local + Viagem)
-    fase: Math.min(faseVisitante, 1.1), // Amortecedor: máximo 1.1
-    importancia: importancia,      // Importância do jogo
-    pesoSetor: 1.0,                // Peso 1.0 pois visitorDemandBase já é o público alvo total
-    precoBase: precoBaseVis,
-    precoAtual: precoAtualVis,
-    sector: 'visitante'
-  });
+  let demandaVisRaw = 0;
+  let visitorDynamicElasticity = window.Logic.SectorElasticity['visitante'] || 1.5;
+  try {
+    const resVis = window.Logic.calculateDemand({
+      torcidaBase: visitorDemandBase, // Base calculada (Local + Viagem)
+      fase: Math.min(faseVisitante, 1.1), // Amortecedor: máximo 1.1
+      importancia: importancia,      // Importância do jogo
+      pesoSetor: 1.0,                // Peso 1.0 pois visitorDemandBase já é o público alvo total
+      precoBase: precoBaseVis,
+      precoAtual: precoAtualVis,
+      sector: 'visitante',
+      atratividadeAdversario: matchAptitude
+    });
+    if (resVis && typeof resVis === 'object' && 'demand' in resVis) {
+      demandaVisRaw = resVis.demand;
+      visitorDynamicElasticity = resVis.dynamicElasticity || visitorDynamicElasticity;
+    } else {
+      demandaVisRaw = Number(resVis) || 0;
+    }
+  } catch (err) {
+    console.error('Error calculating visitor demand', err);
+  }
 
   const publicoVis = Math.min(capVis, Math.round(demandaVisRaw));
   totalAttendance += publicoVis;
   visitorAttendance += publicoVis;
   grossRevenue += publicoVis * precoAtualVis;
+  
+  // Atualiza barra de visitante e cria div expansível
   updateProgressBar('visitante', publicoVis, capVis);
   try {
+    const progWrapVis = document.getElementById('progress-wrap-visitante');
+    if (progWrapVis) {
+      // Remove a div de detalhes antiga se existir
+      let detailsDiv = progWrapVis.querySelector('.demand-details');
+      if (detailsDiv) {
+        detailsDiv.remove();
+      }
+      
+      // Cria nova div de detalhes
+      detailsDiv = document.createElement('div');
+      detailsDiv.className = 'demand-details';
+      
+      const priceRatioVis = precoBaseVis / precoAtualVis;
+      const fatorPrecoVis = Math.pow(priceRatioVis, visitorDynamicElasticity).toFixed(2);
+      const demandaVisConstante = Math.round(visitorDemandBase * faseVisitante * importancia);
+      
+      const toggleDiv = document.createElement('div');
+      toggleDiv.className = 'small text-muted cursor-pointer d-flex justify-content-between align-items-center mt-1';
+      toggleDiv.innerHTML = `<span>Detalhes do cálculo</span><i class="bi bi-chevron-down"></i>`;
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'mt-1 text-light small p-2 bg-dark border border-secondary-50 d-none';
+      contentDiv.style.fontSize = '0.85rem';
+      contentDiv.innerHTML = `
+        <strong>Potencial:</strong> ${formatNumber(demandaVisConstante)} pessoas<br>
+        (Base: ${formatNumber(Math.round(visitorDemandBase))} × Fase: ${(faseVisitante * 100).toFixed(0)}% × Prestígio: ${matchAptitude}x)<br><br>
+        <strong>Impacto do Preço:</strong> ×${fatorPrecoVis}<br>
+        (Sensibilidade: ${visitorDynamicElasticity.toFixed(2)})<br><br>
+        <strong>Resultado:</strong> ${formatNumber(Math.round(demandaVisRaw))} ingressos (${formatNumber(publicoVis)} ocupados de ${formatNumber(capVis)})
+      `;
+      
+      detailsDiv.appendChild(toggleDiv);
+      detailsDiv.appendChild(contentDiv);
+      progWrapVis.appendChild(detailsDiv);
+      
+      // Adiciona event listener para toggle
+      toggleDiv.addEventListener('click', () => {
+        contentDiv.classList.toggle('d-none');
+        const icon = toggleDiv.querySelector('i');
+        icon.classList.toggle('bi-chevron-down');
+        icon.classList.toggle('bi-chevron-up');
+      });
+    }
+    
+    // Mantém tooltip também
     const barVis = document.getElementById('bar-visitante');
     if (barVis) {
-      const elasticityVis = window.Logic.SectorElasticity['visitante'] || 1.8;
       const priceRatioVis = precoBaseVis / precoAtualVis;
+      const fatorPrecoVis = Math.pow(priceRatioVis, visitorDynamicElasticity).toFixed(2);
       const breakdownVis = `\nFORMULA DA DEMANDA (Visitante):\n-------------------\n` +
-                           `1. Base Visitante: ${formatNumber(Math.round(visitorDemandBase))}\n` +
-                           `2. Fase: ${(faseVisitante * 100).toFixed(0)}% x Importancia: ${importancia}x\n` +
-                           `-------------------\n` +
-                           `POTENCIAL VISITANTE: ${formatNumber(Math.round(visitorDemandBase * faseVisitante * importancia))} pessoas\n` +
-                           `-------------------\n` +
-                           `AJUSTE DE PRECO (R$ ${precoAtualVis}): Preco Base R$ ${precoBaseVis} vs Atual = Ratio ${priceRatioVis.toFixed(2)}\n` +
-                           `Elasticidade (${elasticityVis}) impactou a demanda em ${(Math.pow(priceRatioVis, elasticityVis) * 100).toFixed(0)}%`;
+               `1. Base Visitante: ${formatNumber(Math.round(visitorDemandBase))}\n` +
+               `2. Fase: ${(faseVisitante * 100).toFixed(0)}% x Importancia: ${importancia}x\n` +
+               `-------------------\n` +
+               `POTENCIAL VISITANTE: ${formatNumber(Math.round(visitorDemandBase * faseVisitante * importancia))} pessoas\n` +
+               `-------------------\n` +
+               `AJUSTE DE PRECO (R$ ${precoAtualVis}): Preco Base R$ ${precoBaseVis} vs Atual = Ratio ${priceRatioVis.toFixed(2)}\n` +
+               `Impacto do Preço: x${fatorPrecoVis} (elasticidade efetiva: ${visitorDynamicElasticity.toFixed(2)})\n` +
+               `Prestígio do Confronto: ${homeSerie} vs ${awaySerie} (aptidão ${matchAptitude}x)`;
       barVis.setAttribute('title', breakdownVis);
     }
   } catch (e) {}
@@ -865,7 +1072,158 @@ function computeAndRender() {
   const totalCosts = fixedCostReal + variableCostReal;
   const netProfit = grossRevenue - totalCosts;
 
-  // 7. EXIBIÇÃO
+  // 7. MEMÓRIA DE CÁLCULO (Dashboard Auditoria - Enterprise Style com Análise Técnica)
+  let mathExplanation = '';
+  if (currentHomeIndex !== null && currentHomeIndex !== undefined) {
+    // Calcular engajamento percentual
+    const engajementoPercentual = ((homeFanBase / rawHomeFans) * 100).toFixed(1);
+    const fatorContexto = (faseMandante * importancia).toFixed(3);
+    
+    // ═══════════════════════════════════════════════════════════════
+    // HEADER: Contexto Global Expandido (TAREFA 1)
+    // ═══════════════════════════════════════════════════════════════
+    mathExplanation = `
+      <div class="audit-header mb-4">
+        <h6 class="mb-3" style="font-size: 1rem; font-weight: 600; color: var(--brand-9);">
+          Memória de Cálculo - ${homeSerie}
+        </h6>
+        
+        <div class="kpi-grid mb-4">
+          <div class="kpi-audit-card">
+            <div class="kpi-label">Torcida Ativa</div>
+            <div class="kpi-value">${formatNumber(homeFanBase)}</div>
+            <div class="kpi-subtitle">${engajementoPercentual}% de ${formatNumber(rawHomeFans)}</div>
+          </div>
+          <div class="kpi-audit-card">
+            <div class="kpi-label">Fator Contexto</div>
+            <div class="kpi-value">${fatorContexto}</div>
+            <div class="kpi-subtitle">Fase: ${faseMandante.toFixed(2)}x × Importância: ${importancia}x</div>
+          </div>
+          <div class="kpi-audit-card">
+            <div class="kpi-label">Fator Confronto</div>
+            <div class="kpi-value">${(matchAptitude * 100).toFixed(0)}%</div>
+            <div class="kpi-subtitle">${homeSerie} vs ${awaySerie}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Auditoria Analítica (TAREFA 2) -->
+      <div class="audit-table-wrapper">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>Setor</th>
+              <th>Base Útil</th>
+              <th>Mult. Social</th>
+              <th>Mult. Econômico</th>
+              <th>Demanda Final</th>
+              <th>Ocupação</th>
+            </tr>
+          </thead>
+          <tbody>
+`;
+
+    // Gerar linhas da tabela para cada setor (TAREFA 2)
+    sectors.forEach(sectorKey => {
+      const { peso, precoBase, precoAtual, demandaRaw: demandaRawOrig, usedDynamicElasticity } = sectorData[sectorKey];
+      const demandaRaw = demandaRawOrig * fatorCorrecao;
+      const capacidade = sectorDistribution[sectorKey];
+      const publicoFinal = Math.min(capacidade, Math.round(demandaRaw));
+
+      const elasticity = usedDynamicElasticity || window.Logic.SectorElasticity[sectorKey] || 1.0;
+      const priceRatio = precoBase / precoAtual;
+      const fatorPreco = Math.pow(priceRatio, elasticity);
+      
+      // Base Útil = Torcida Ativa × Peso do Setor
+      const baseUtil = Math.round(homeFanBase * peso);
+      
+      // Multiplicador Social = Fase × Importância × Prestígio
+      const multSocial = (faseMandante * importancia * matchAptitude).toFixed(2);
+      
+      // Multiplicador Econômico = Fator de Preço (Elasticidade)
+      const multEconomico = fatorPreco.toFixed(2);
+
+      const ocupacaoPct = ((publicoFinal / capacidade) * 100).toFixed(0);
+      const sectorLabel = sectorKey.charAt(0).toUpperCase() + sectorKey.slice(1);
+
+      mathExplanation += `
+            <tr class="indicator-${sectorKey}">
+              <td><strong>${sectorLabel}</strong></td>
+              <td>${formatNumber(baseUtil)}</td>
+              <td><span class="var-badge">${multSocial}x</span></td>
+              <td><span class="var-badge">${multEconomico}x</span></td>
+              <td><strong>${formatNumber(Math.round(demandaRaw))}</strong></td>
+              <td><span class="occupancy-badge">${ocupacaoPct}%</span></td>
+            </tr>
+`;
+    });
+
+    // Adicionar linha de rodapé se houver redução
+    if (fatorCorrecao < 1.0) {
+      const percentAjuste = ((1 - fatorCorrecao) * 100).toFixed(1);
+      mathExplanation += `
+            <tr class="table-footer-warning">
+              <td colspan="6">
+                <strong style="color: #c92a2a;">Capacidade excedida: ajuste global de -${percentAjuste}% aplicado</strong>
+              </td>
+            </tr>
+`;
+    }
+
+    // Adicionar linha de visitantes
+    const baseUtilVis = Math.round(visitorDemandBase);
+    const multSocialVis = (faseVisitante * importancia * matchAptitude).toFixed(2);
+    const priceRatioVis = precoBaseVis / precoAtualVis;
+    const fatorPrecoVis = Math.pow(priceRatioVis, visitorDynamicElasticity).toFixed(2);
+    const ocupacaoVisitorPct = ((publicoVis / capVis) * 100).toFixed(0);
+
+    mathExplanation += `
+            <tr class="indicator-visitante">
+              <td><strong>Visitante</strong></td>
+              <td>${formatNumber(baseUtilVis)}</td>
+              <td><span class="var-badge">${multSocialVis}x</span></td>
+              <td><span class="var-badge">${fatorPrecoVis}x</span></td>
+              <td><strong>${formatNumber(Math.round(demandaVisRaw))}</strong></td>
+              <td><span class="occupancy-badge">${ocupacaoVisitorPct}%</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Glossário de Variáveis (TAREFA 3) -->
+      <div class="glossary-section mt-4">
+        <h6 class="glossary-title">Legenda Técnica</h6>
+        <div class="glossary-items">
+          <div class="glossary-item">
+            <span class="glossary-term"><span class="var-badge">w</span> Peso (w)</span>
+            <span class="glossary-desc">Preferência natural do torcedor por este setor. Varia por série e qualidade do estádio.</span>
+          </div>
+          <div class="glossary-item">
+            <span class="glossary-term"><span class="var-badge">k</span> Elasticidade (k)</span>
+            <span class="glossary-desc">Sensibilidade do setor ao preço. Popular = ${window.Logic.SectorElasticity.popular.toFixed(1)} (sensível), Camarote = ${window.Logic.SectorElasticity.camarote.toFixed(1)} (insensível).</span>
+          </div>
+          <div class="glossary-item">
+            <span class="glossary-term"><span class="var-badge">β</span> Prestígio (β)</span>
+            <span class="glossary-desc">Impacto relativo da aptidão entre séries no confronto. Aumenta demanda em clássicos e jogos importantes.</span>
+          </div>
+          <div class="glossary-item">
+            <span class="glossary-term"><span class="var-badge">φ</span> Fator Contexto (φ)</span>
+            <span class="glossary-desc">Produto da Fase (momentum do time) × Importância (crítica do jogo). Modula a demanda potencial.</span>
+          </div>
+        </div>
+      </div>
+`;
+
+  }
+
+  // Exibe na seção de Memória de Cálculo
+  const mathContent = document.getElementById('math-explanation-content');
+  if (mathContent) {
+    mathContent.innerHTML = mathExplanation || '<div class="empty-state"><div class="empty-icon" style="font-size: 2rem; margin-bottom: 1rem;">—</div><div class="empty-text">Selecione um time para ver a análise detalhada</div></div>';
+  }
+
+  // 8. EXIBIÇÃO KPIs
   const grossRevenueEl = document.getElementById('gross-revenue');
   if (grossRevenueEl) grossRevenueEl.textContent = formatCurrency(grossRevenue);
 
@@ -888,7 +1246,7 @@ function computeAndRender() {
   const smallProfit = document.getElementById('net-profit-small'); 
   if (smallProfit) smallProfit.textContent = formatCurrency(netProfit);
 
-  // 8. DETALHAMENTO NOS COLLAPSES
+  // 9. DETALHAMENTO NOS COLLAPSES
   const attendanceDetails = document.getElementById('attendance-details');
   if (attendanceDetails) {
     attendanceDetails.innerHTML = `Mandante: ${formatNumber(homeAttendance)} + Visitante: ${formatNumber(visitorAttendance)}`;
@@ -898,10 +1256,10 @@ function computeAndRender() {
   if (costDetails) {
     costDetails.innerHTML = `
       <div class="mt-2 border-start border-secondary ps-2">
-        <div class="text-white">Custo Fixo: ${formatCurrency(fixedCostReal)}</div>
+        <div>Custo Fixo: ${formatCurrency(fixedCostReal)}</div>
         <small class="text-muted d-block mb-1">Manutenção predial e staff base.</small>
         
-        <div class="text-white">Custo Variável: ${formatCurrency(variableCostReal)}</div>
+        <div>Custo Variável: ${formatCurrency(variableCostReal)}</div>
         <small class="text-muted d-block">
           ${formatNumber(totalAttendance)} pagantes x ${formatCurrency(costPerHead)}
           (Limpeza, segurança e consumo per capita).
@@ -931,6 +1289,12 @@ function computeAndRender() {
 
   // Re-init tooltips para garantir que títulos/tooltips novos sejam aplicados
   try { initTooltips(); } catch (e) {}
+
+  // Popula o detalhamento de demanda
+  const demandListEl = document.getElementById('demand-list-html');
+  if (demandListEl) {
+    demandListEl.innerHTML = breakdownHTML || '<p class="text-muted">Selecione um time para ver o detalhamento.</p>';
+  }
 
   // Inicializa tooltips diretamente para elementos atuais (considera elementos dinâmicos)
   try {
