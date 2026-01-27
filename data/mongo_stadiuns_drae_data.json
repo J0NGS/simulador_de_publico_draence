@@ -1,0 +1,410 @@
+[
+    {
+        "_id": 1,
+        "name": "Arena Solaris",
+        "quality": "EXCELENTE",
+        "capacity": 48000,
+        "owner": 1,
+        "city": 1
+    },
+    {
+        "_id": 2,
+        "name": "Ninho do Gavião",
+        "quality": "EXCELENTE",
+        "capacity": 47000,
+        "owner": 2,
+        "city": 6
+    },
+    {
+        "_id": 3,
+        "name": "Arena Goóck",
+        "quality": "EXCELENTE",
+        "capacity": 19300,
+        "owner": 3,
+        "city": 3
+    },
+    {
+        "_id": 4,
+        "name": "A Fortaleza",
+        "quality": "EXCELENTE",
+        "capacity": 22000,
+        "owner": 4,
+        "city": 2
+    },
+    {
+        "_id": 5,
+        "name": "Porto Arena",
+        "quality": "EXCELENTE",
+        "capacity": 25000,
+        "owner": 5,
+        "city": 4
+    },
+    {
+        "_id": 6,
+        "name": "Esmeraldão",
+        "quality": "EXCELENTE",
+        "capacity": 26000,
+        "owner": 6,
+        "city": 5
+    },
+    {
+        "_id": 7,
+        "name": "Arena Partage",
+        "quality": "EXCELENTE",
+        "capacity": 40000,
+        "owner": 7,
+        "city": 8
+    },
+    {
+        "_id": 8,
+        "name": "Marcos Rangel/Marcão",
+        "quality": "EXCELENTE",
+        "capacity": 25000,
+        "owner": 8,
+        "city": 10
+    },
+    {
+        "_id": 9,
+        "name": "Arena Lupina",
+        "quality": "EXCELENTE",
+        "capacity": 26500,
+        "owner": 9,
+        "city": 7
+    },
+    {
+        "_id": 10,
+        "name": "Ilha do Príncipe",
+        "quality": "ÓTIMO",
+        "capacity": 20300,
+        "owner": 10,
+        "city": 6
+    },
+    {
+        "_id": 11,
+        "name": "Estádio Alvorecer",
+        "quality": "BOM",
+        "capacity": 15500,
+        "owner": 11,
+        "city": 9
+    },
+    {
+        "_id": 12,
+        "name": "Azul da Colina",
+        "quality": "EXCELENTE",
+        "capacity": 25500,
+        "owner": 12,
+        "city": 10
+    },
+    {
+        "_id": 13,
+        "name": "Estádio da Prata/Silveirão",
+        "quality": "REGULAR",
+        "capacity": 14300,
+        "owner": 13,
+        "city": 8
+    },
+    {
+        "_id": 14,
+        "name": "Energão",
+        "quality": "BOM",
+        "capacity": 20000,
+        "owner": 14,
+        "city": 19
+    },
+    {
+        "_id": 15,
+        "name": "Arena Sky",
+        "quality": "ÓTIMO",
+        "capacity": 20000,
+        "owner": 15,
+        "city": 12
+    },
+    {
+        "_id": 16,
+        "name": "Estádio do Fogo",
+        "quality": "REGULAR",
+        "capacity": 14000,
+        "owner": 16,
+        "city": 14
+    },
+    {
+        "_id": 17,
+        "name": "Arena Triunfo",
+        "quality": "ÓTIMO",
+        "capacity": 15400,
+        "owner": 17,
+        "city": 13
+    },
+    {
+        "_id": 18,
+        "name": "Estádio da Fera",
+        "quality": "BOM",
+        "capacity": 24500,
+        "owner": 18,
+        "city": 3
+    },
+    {
+        "_id": 19,
+        "name": "Vortex Stadium",
+        "quality": "REGULAR",
+        "capacity": 14100,
+        "owner": 19,
+        "city": 21
+    },
+    {
+        "_id": 20,
+        "name": "Estádio Oceânico",
+        "quality": "REGULAR",
+        "capacity": 11000,
+        "owner": 20,
+        "city": 1
+    },
+    {
+        "_id": 21,
+        "name": "Darkwing",
+        "quality": "BOM",
+        "capacity": 11500,
+        "owner": 21,
+        "city": 5
+    },
+    {
+        "_id": 22,
+        "name": "Arena Lupina",
+        "quality": "EXCELENTE",
+        "capacity": 26501,
+        "owner": 22,
+        "city": 7
+    },
+    {
+        "_id": 23,
+        "name": "Arena Imperial",
+        "quality": "BOM",
+        "capacity": 20000,
+        "owner": 23,
+        "city": 19
+    },
+    {
+        "_id": 24,
+        "name": "Dragons Stadium",
+        "quality": "ÓTIMO",
+        "capacity": 19000,
+        "owner": 24,
+        "city": 15
+    },
+    {
+        "_id": 25,
+        "name": "Shark Stadium",
+        "quality": "REGULAR",
+        "capacity": 14400,
+        "owner": 25,
+        "city": 9
+    },
+    {
+        "_id": 26,
+        "name": "Lorenzo Arena",
+        "quality": "REGULAR",
+        "capacity": 14000,
+        "owner": 26,
+        "city": 4
+    },
+    {
+        "_id": 27,
+        "name": "Tiger Stadium",
+        "quality": "REGULAR",
+        "capacity": 10200,
+        "owner": 27,
+        "city": 11
+    },
+    {
+        "_id": 28,
+        "name": "Gorilla Stadium",
+        "quality": "REGULAR",
+        "capacity": 9000,
+        "owner": 28,
+        "city": 11
+    },
+    {
+        "_id": 29,
+        "name": "Jefferson Arena/Jefão",
+        "quality": "BOM",
+        "capacity": 23000,
+        "owner": 29,
+        "city": 20
+    },
+    {
+        "_id": 30,
+        "name": "Ilha do Ouro",
+        "quality": "BOM",
+        "capacity": 19900,
+        "owner": 30,
+        "city": 17
+    },
+    {
+        "_id": 31,
+        "name": "Glasstadium",
+        "quality": "ÓTIMO",
+        "capacity": 12000,
+        "owner": 31,
+        "city": 2
+    },
+    {
+        "_id": 32,
+        "name": "Estádio Verde",
+        "quality": "ÓTIMO",
+        "capacity": 9400,
+        "owner": 32,
+        "city": 16
+    },
+    {
+        "_id": 33,
+        "name": "Trevo Arena",
+        "quality": "ÓTIMO",
+        "capacity": 9500,
+        "owner": 33,
+        "city": 18
+    },
+    {
+        "_id": 34,
+        "name": "Ouro Negro Stadium",
+        "quality": "EXCELENTE",
+        "capacity": 30000,
+        "owner": 34,
+        "city": 17
+    },
+    {
+        "_id": 35,
+        "name": "Zinstadium",
+        "quality": "REGULAR",
+        "capacity": 10500,
+        "owner": 35,
+        "city": 16
+    },
+    {
+        "_id": 36,
+        "name": "Trevo Arena",
+        "quality": "ÓTIMO",
+        "capacity": 9501,
+        "owner": 36,
+        "city": 18
+    },
+    {
+        "_id": 37,
+        "name": "Estádio Wuster",
+        "quality": "REGULAR",
+        "capacity": 14900,
+        "owner": 37,
+        "city": 21
+    },
+    {
+        "_id": 38,
+        "name": "Batstadium",
+        "quality": "REGULAR",
+        "capacity": 10000,
+        "owner": 38,
+        "city": 14
+    },
+    {
+        "_id": 39,
+        "name": "Estádio Oceânico",
+        "quality": "REGULAR",
+        "capacity": 11000,
+        "owner": 39,
+        "city": 1
+    },
+    {
+        "_id": 40,
+        "name": "Estádio da Villa",
+        "quality": "BOM",
+        "capacity": 9000,
+        "owner": 40,
+        "city": 15
+    },
+    {
+        "_id": 41,
+        "name": "Zinstadium",
+        "quality": "REGULAR",
+        "capacity": 10501,
+        "owner": 41,
+        "city": 16
+    },
+    {
+        "_id": 42,
+        "name": "Royal Arena",
+        "quality": "BOM",
+        "capacity": 8500,
+        "owner": 42,
+        "city": 20
+    },
+    {
+        "_id": 43,
+        "name": "Estádio Oceânico",
+        "quality": "REGULAR",
+        "capacity": 11000,
+        "owner": 43,
+        "city": 1
+    },
+    {
+        "_id": 44,
+        "name": "Arena Triunfo",
+        "quality": "ÓTIMO",
+        "capacity": 15400,
+        "owner": 44,
+        "city": 13
+    },
+    {
+        "_id": 45,
+        "name": "Glasstadium",
+        "quality": "ÓTIMO",
+        "capacity": 12000,
+        "owner": 45,
+        "city": 2
+    },
+    {
+        "_id": 46,
+        "name": "Glasstadium",
+        "quality": "ÓTIMO",
+        "capacity": 12000,
+        "owner": 46,
+        "city": 2
+    },
+    {
+        "_id": 47,
+        "name": "Blue Arena",
+        "quality": "RUIM",
+        "capacity": 7500,
+        "owner": 47,
+        "city": 12
+    },
+    {
+        "_id": 48,
+        "name": "Estádio Verde",
+        "quality": "ÓTIMO",
+        "capacity": 9400,
+        "owner": 48,
+        "city": 16
+    },
+    {
+        "_id": 49,
+        "name": "Stadium Capital",
+        "quality": "EXCELENTE",
+        "capacity": 70000,
+        "owner": null,
+        "city": 1
+    },
+    {
+        "_id": 50,
+        "name": "Dvista Eventos",
+        "quality": "ÓTIMO",
+        "capacity": 30000,
+        "owner": null,
+        "city": 1
+    },
+    {
+        "_id": 51,
+        "name": "Castle Arena",
+        "quality": "EXCELENTE",
+        "capacity": 45000,
+        "owner": null,
+        "city": 1
+    }
+]

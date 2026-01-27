@@ -129,6 +129,26 @@
                 </select>
               </div>
 
+              <!-- Stadium Selection -->
+              <div class="mb-3">
+                <label class="form-label">Estádio do Jogo</label>
+                <select id="select-stadium" class="form-select bg-white text-dark border-secondary-subtle">
+                  <option value="">Carregando estádios...</option>
+                </select>
+              </div>
+
+              <!-- Rental Price for Neutral Stadiums -->
+              <div id="rental-price-section" class="mb-3 d-none">
+                <label class="form-label">Preço de Aluguel do Estádio</label>
+                <div class="d-flex gap-2">
+                  <input type="range" id="rental-price-slider" class="form-range" min="10000" max="500000" step="5000" value="50000">
+                </div>
+                <div class="mt-2">
+                  <input type="text" id="rental-price-input" class="form-control" value="R$ 50.000,00">
+                </div>
+                <small class="text-muted mt-1">Este estádio é neutro (sem dono). O valor de aluguel será descontado dos custos.</small>
+              </div>
+
               
             </div>
           </div>

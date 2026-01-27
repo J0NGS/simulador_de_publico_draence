@@ -4,8 +4,12 @@ console.log('Calculadora de Renda de Estádio - inicializado');
 // Dados carregados
 let teams = [];
 let cities = [];
+let stadiums = [];
 let selectedVisitor = null;
 let currentHomeIndex = null;
+let selectedStadium = null;
+let rentalPrice = 0;
+let isRentalStadium = false;
 
 // Preços de REFERÊNCIA para estádio BOM (Multiplicador 1.0)
 const STD_PRICES = Object.freeze({
@@ -142,17 +146,19 @@ function parseCurrencyFromInput(str) {
 
 async function loadData() {
   try {
-    const [teamsRes, citiesRes] = await Promise.all([
+    const [teamsRes, citiesRes, stadiumsRes] = await Promise.all([
       fetch('data/mongo_teams_drae_data.json'),
-      fetch('data/mongo_cities_drae_data.json')
+      fetch('data/mongo_cities_drae_data.json'),
+      fetch('data/mongo_stadiuns_drae_data.json')
     ]);
 
-    if (!teamsRes.ok || !citiesRes.ok) {
+    if (!teamsRes.ok || !citiesRes.ok || !stadiumsRes.ok) {
       throw new Error('Falha ao obter os arquivos JSON (verifique caminhos e permissões)');
     }
 
     teams = await teamsRes.json();
     cities = await citiesRes.json();
+    stadiums = await stadiumsRes.json();
 
     populateTeamSelects();
   } catch (err) {
@@ -170,7 +176,8 @@ function populateTeamSelects() {
   selAway.innerHTML = '<option value="">Selecione o Visitante</option>';
 
   teams.forEach((team, idx) => {
-    const cityName = getCityNameById(team.cityId) || '';
+    const stadium = stadiums.find(s => s.owner === team._id);
+    const cityName = getCityNameById(stadium?.city) || '';
     const text = cityName ? `${team.name} — ${cityName}` : `${team.name}`;
 
     const optHome = document.createElement('option');
@@ -192,10 +199,92 @@ function populateTeamSelects() {
   if (selImportance) selImportance.addEventListener('change', computeAndRender);
 }
 
+function populateStadiumSelect() {
+  const selStadium = document.getElementById('select-stadium');
+  if (!selStadium || currentHomeIndex === null || currentHomeIndex === undefined) return;
+
+  const homeTeam = teams[currentHomeIndex];
+  if (!homeTeam) return;
+
+  const homeTeamId = Number(homeTeam._id);
+
+  const availableStadiums = stadiums.filter(s => {
+    // Estádio do time dono ou estádios sem dono
+    return Number(s.owner) === homeTeamId || s.owner === null;
+  });
+
+  console.log(`[Stadium Debug] Time: ${homeTeam.name} (ID: ${homeTeamId}), Estádios disponíveis: ${availableStadiums.length}`);
+
+  selStadium.innerHTML = '<option value="">Selecione o Estádio</option>';
+  
+  availableStadiums.forEach((stadium) => {
+    const ownerType = Number(stadium.owner) === homeTeamId ? '(Dono)' : '(Neutro)';
+    const cityName = getCityNameById(stadium.city);
+    const cityLabel = cityName ? ` — ${cityName}` : '';
+    const opt = document.createElement('option');
+    opt.value = stadium._id;
+    opt.textContent = `${stadium.name}${cityLabel} — ${stadium.quality} (Cap: ${formatNumber(stadium.capacity)}) ${ownerType}`;
+    selStadium.appendChild(opt);
+  });
+
+  selStadium.addEventListener('change', onStadiumChange);
+}
+
+function onStadiumChange(event) {
+  const stadiumId = event.target.value;
+  if (!stadiumId) {
+    selectedStadium = null;
+    isRentalStadium = false;
+    rentalPrice = 0;
+    document.getElementById('rental-price-section').classList.add('d-none');
+    computeAndRender();
+    return;
+  }
+
+  selectedStadium = stadiums.find(s => s._id === Number(stadiumId));
+  isRentalStadium = selectedStadium?.owner === null;
+
+  if (isRentalStadium) {
+    document.getElementById('rental-price-section').classList.remove('d-none');
+    rentalPrice = 50000; // Default rental price
+    document.getElementById('rental-price-slider').value = rentalPrice;
+    document.getElementById('rental-price-input').value = formatCurrency(rentalPrice);
+    attachRentalPriceListeners();
+  } else {
+    document.getElementById('rental-price-section').classList.add('d-none');
+    rentalPrice = 0;
+  }
+
+  computeAndRender();
+}
+
+function attachRentalPriceListeners() {
+  const slider = document.getElementById('rental-price-slider');
+  const input = document.getElementById('rental-price-input');
+
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      rentalPrice = Number(e.target.value);
+      input.value = formatCurrency(rentalPrice);
+      computeAndRender();
+    });
+  }
+
+  if (input) {
+    input.addEventListener('change', (e) => {
+      rentalPrice = parseCurrencyFromInput(e.target.value) || 50000;
+      rentalPrice = Math.max(10000, Math.min(500000, rentalPrice));
+      slider.value = rentalPrice;
+      input.value = formatCurrency(rentalPrice);
+      computeAndRender();
+    });
+  }
+}
+
 function getCityNameById(id) {
   if (id === undefined || id === null) return '';
-  const c = cities.find(ct => ct.id == id || ct._id == id || ct.cityId == id);
-  return c ? c.name : '';
+  const c = cities.find(ct => ct._id == id);
+  return c ? c.city : '';
 }
 
 function sumTeamFans(team) {
@@ -289,6 +378,10 @@ function onMandanteChange(event) {
     currentHomeIndex = null;
     document.getElementById('sectors-container').innerHTML = '';
     document.getElementById('progress-container').innerHTML = '';
+    document.getElementById('select-stadium').innerHTML = '<option value="">Carregando estádios...</option>';
+    selectedStadium = null;
+    isRentalStadium = false;
+    rentalPrice = 0;
     computeAndRender();
     return;
   }
@@ -314,6 +407,10 @@ function onMandanteChange(event) {
 
   // Renderiza cards por setor para o mandante
   renderSectorCards(team);
+  
+  // Popula seleção de estádios
+  populateStadiumSelect();
+  
   computeAndRender();
 }
 
@@ -341,19 +438,29 @@ function renderSectorCards(team) {
   container.innerHTML = '';
   progressContainer.innerHTML = '';
 
-  const quality = (window.Logic && window.Logic.normalizeQuality) ? window.Logic.normalizeQuality(team.stadiumQuality || 'BOM') : ((team.stadiumQuality || 'BOM').toUpperCase());
+  // Usar dados do estádio selecionado, ou do time padrão
+  let stadium = selectedStadium || stadiums.find(s => s.owner === team._id);
+  if (!stadium) stadium = { name: team.stadium, quality: team.stadiumQuality, capacity: team.stadiumCapacity, owner: team._id };
+
+  const quality = (window.Logic && window.Logic.normalizeQuality) ? window.Logic.normalizeQuality(stadium.quality || 'BOM') : ((stadium.quality || 'BOM').toUpperCase());
   
-  // 1. PEGA O MULTIPLICADOR
-  const multiplier = window.Logic.getQualityMultiplier(quality);
+  // 1. PEGA O MULTIPLICADOR DE QUALIDADE
+  let qualityMultiplier = window.Logic.getQualityMultiplier(quality);
   
-  const sectorCaps = window.Logic.calculateSectorDistribution(team.stadiumCapacity, quality);
+  // 2. APLICA MULTIPLICADOR DE 100% PARA ESTÁDIOS SEM DONO (MULTIPLICAÇÃO DO PREÇO)
+  let priceMultiplier = qualityMultiplier;
+  if (isRentalStadium) {
+    priceMultiplier = qualityMultiplier * 2; // 100% de aumento
+  }
+  
+  const sectorCaps = window.Logic.calculateSectorDistribution(stadium.capacity, quality);
   const sectors = ['popular', 'intermediario', 'premium', 'camarote'];
 
   sectors.forEach(sectorKey => {
     const cap = sectorCaps[sectorKey] || 0;
 
-    // 2. CALCULA O PREÇO BASE AJUSTADO
-    const basePrice = Math.round(STD_PRICES[sectorKey] * multiplier);
+    // 2. CALCULA O PREÇO BASE AJUSTADO (COM MULTIPLICADOR DE ALUGUEL SE APLICÁVEL)
+    const basePrice = Math.round(STD_PRICES[sectorKey] * priceMultiplier);
 
     // Card
     const col = document.createElement('div');
@@ -434,26 +541,30 @@ function renderSectorCards(team) {
           display.textContent = formatCurrency(valToShow);
         }
       }
+      enforcePriceChain();
       computeAndRender();
     });
 
     // Slider -> input sync
     slider.addEventListener('input', () => {
       input.value = String(Math.round(Number(slider.value)));
-      // show as plain number while sliding
+      enforcePriceChain();
       computeAndRender();
     });
 
     const suggested = document.createElement('small');
     suggested.className = 'text-muted d-block mt-2';
+    suggested.id = `base-price-display-${sectorKey}`;
+    suggested.setAttribute('data-sector', sectorKey);
+    suggested.setAttribute('data-std-price', STD_PRICES[sectorKey]);
     suggested.innerHTML = `
       <div class="d-flex align-items-center mt-2">
-        <small class="text-muted me-1">Base: ${formatCurrency(basePrice)}</small>
+        <small class="text-muted me-1">Base: <span id="base-value-${sectorKey}">${formatCurrency(basePrice)}</span></small>
         <i class="bi bi-info-circle text-secondary" 
            style="font-size: 0.8rem; cursor: help;"
            data-bs-toggle="tooltip" 
            data-bs-html="true"
-           title="Valor calculado com base no multiplicador de qualidade do estádio (${multiplier}x) sobre a tabela padrão.">
+           title="Valor calculado com base no multiplicador de qualidade do estádio sobre a tabela padrão.">
         </i>
       </div>
     `;
@@ -499,7 +610,7 @@ function renderSectorCards(team) {
         </div>
         <div>
           <div class="small text-muted">Preço (igual ao Intermediário)</div>
-          <div class="fw-semibold" id="visitor-price-display">${formatCurrency(Math.round(STD_PRICES.intermediario * multiplier))}</div>
+          <div class="fw-semibold" id="visitor-price-display">${formatCurrency(Math.round(STD_PRICES.intermediario * priceMultiplier))}</div>
         </div>
       </div>
     </div>
@@ -530,29 +641,59 @@ function setupPriceListeners() {
   // This function intentionally left minimal to avoid double-binding handlers.
 }
 
-// Enforce chain constraint: each next sector >= previous * 1.5
-function enforcePriceChain() {
-  const sectors = ['popular','intermediario','premium','camarote'];
-  const values = sectors.map(k => {
-    const el = document.getElementById(`price-${k}`);
-    const fallback = Math.round(STD_PRICES[k] || 0);
-    if (!el) return fallback;
-    const v = parseCurrencyFromInput(el.value);
-    return (Number.isFinite(v) && v > 0) ? Math.round(v * 100) / 100 : fallback;
+// Atualiza display do preço base de todos os setores quando o estádio muda
+function updateBasePriceDisplays() {
+  if (currentHomeIndex === null || currentHomeIndex === undefined) return;
+  
+  const home = teams[currentHomeIndex];
+  let stadium = selectedStadium || stadiums.find(s => s.owner === home._id);
+  if (!stadium) stadium = { name: home.stadium, quality: home.stadiumQuality, capacity: home.stadiumCapacity, owner: home._id };
+  
+  const quality = (window.Logic && window.Logic.normalizeQuality) ? window.Logic.normalizeQuality(stadium.quality || 'BOM') : ((stadium.quality || 'BOM').toUpperCase());
+  let qualityMultiplier = window.Logic.getQualityMultiplier(quality);
+  let priceMultiplier = qualityMultiplier;
+  if (isRentalStadium) {
+    priceMultiplier = qualityMultiplier * 2;
+  }
+  
+  const sectors = ['popular', 'intermediario', 'premium', 'camarote'];
+  sectors.forEach(sectorKey => {
+    const basePrice = Math.round(STD_PRICES[sectorKey] * priceMultiplier);
+    const displayEl = document.getElementById(`base-value-${sectorKey}`);
+    if (displayEl) {
+      displayEl.textContent = formatCurrency(basePrice);
+    }
   });
+}
 
-  for (let i = 0; i < values.length - 1; i++) {
-    const minNext = Math.round(values[i] * 1.5 * 100) / 100;
-    if (values[i + 1] < minNext) {
-      values[i + 1] = minNext;
-      const nextEl = document.getElementById(`price-${sectors[i + 1]}`);
-      if (nextEl) {
-        nextEl.value = formatCurrency(values[i + 1]);
-      }
-      const nextSlider = document.getElementById(`slider-${sectors[i + 1]}`);
+// Garante uma hierarquia lógica de preços (Escada de Valor)
+function enforcePriceChain() {
+  const sectors = ['popular', 'intermediario', 'premium', 'camarote'];
+  const multiplier = 1.4; // Cada setor deve ser pelo menos 40% mais caro que o anterior
+
+  for (let i = 0; i < sectors.length - 1; i++) {
+    const currentEl = document.getElementById(`price-${sectors[i]}`);
+    const nextEl = document.getElementById(`price-${sectors[i + 1]}`);
+    const nextSlider = document.getElementById(`slider-${sectors[i + 1]}`);
+
+    if (!currentEl || !nextEl) continue;
+
+    const currentVal = parseCurrencyFromInput(currentEl.value) || 0;
+    const nextVal = parseCurrencyFromInput(nextEl.value) || 0;
+
+    const minAllowedNext = Math.ceil(currentVal * multiplier);
+
+    // Se o próximo setor estiver muito barato em relação ao anterior
+    if (nextVal < minAllowedNext) {
+      nextEl.value = formatCurrency(minAllowedNext);
+      
+      // Sincroniza o slider do próximo setor
       if (nextSlider) {
-        nextSlider.value = Math.min(Number(nextSlider.max), Math.max(Number(nextSlider.min), Math.round(values[i + 1])));
+        nextSlider.value = Math.min(Number(nextSlider.max), Math.max(Number(nextSlider.min), minAllowedNext));
       }
+      
+      // Efeito cascata: verifica o próximo da lista
+      console.log(`[Pricing] Ajustando ${sectors[i+1]} para R$ ${minAllowedNext} para manter a hierarquia.`);
     }
   }
 }
@@ -687,12 +828,22 @@ function computeAndRender() {
   }
 
   const home = teams[currentHomeIndex];
-  const quality = (window.Logic && window.Logic.normalizeQuality) ? window.Logic.normalizeQuality(home.stadiumQuality) : 'BOM';
+  
+  // Usar dados do estádio selecionado ou do time padrão
+  let stadium = selectedStadium || stadiums.find(s => s.owner === home._id);
+  if (!stadium) stadium = { name: home.stadium, quality: home.stadiumQuality, capacity: home.stadiumCapacity, owner: home._id };
+  
+  const quality = (window.Logic && window.Logic.normalizeQuality) ? window.Logic.normalizeQuality(stadium.quality || 'BOM') : ((stadium.quality || 'BOM').toUpperCase());
   
   // 1. MULTIPLICADOR DE QUALIDADE
-  const multiplier = window.Logic.getQualityMultiplier(quality);
+  let multiplier = window.Logic.getQualityMultiplier(quality);
+  
+  // Aplica multiplicador de 100% para estádios sem dono
+  if (isRentalStadium) {
+    multiplier = multiplier * 2;
+  }
 
-  const sectorDistribution = window.Logic.calculateSectorDistribution(home.stadiumCapacity, quality);
+  const sectorDistribution = window.Logic.calculateSectorDistribution(stadium.capacity, quality);
   const distPercentages = window.Logic.StadiumQuality[quality];
 
   // 2. FATORES DE DEMANDA
@@ -791,27 +942,69 @@ function computeAndRender() {
 
   // Para memória de cálculo
   const sectorData = {};
+  let somaAtendimentoPossivel = 0;
   let somaDemandaMandanteRaw = 0;
   let fatorCorrecao = 1.0;
 
-  // PRIMEIRA PASSADA: Calcula demandas brutas para cada setor
+  // --- TRECHO DE CÁLCULO DE DEMANDA CORRIGIDO ---
+  
+  // PRIMEIRA PASSADA: Calcula o que cada setor CONSEGUE atender fisicamente
   sectors.forEach(sectorKey => {
     const cap = sectorDistribution[sectorKey] || 0;
     const peso = window.Logic.InterestWeights[sectorKey] || 0;
-    
-    // Preço Base Dinâmico (STD * Multiplier)
     const precoBase = Math.round(STD_PRICES[sectorKey] * multiplier);
     
-    // Input do Usuário
     const inputEl = document.getElementById(`price-${sectorKey}`);
-    let precoAtual = precoBase;
-    if (inputEl) {
-      const parsed = parseCurrencyFromInput(inputEl.value);
-      precoAtual = Number.isFinite(parsed) ? parsed : precoBase;
-    }
+    const precoAtual = inputEl ? (parseCurrencyFromInput(inputEl.value) || precoBase) : precoBase;
+
+    const res = window.Logic.calculateDemand({
+      torcidaBase: homeFanBase,
+      fase: faseMandante,
+      importancia: importancia,
+      pesoSetor: peso,
+      precoBase: precoBase,
+      precoAtual: precoAtual,
+      sector: sectorKey,
+      atratividadeAdversario: matchAptitude
+    });
+
+    const demandaRaw = res.demand || 0;
+    // O pulo do gato: A demanda que entra na disputa é limitada pela capacidade do setor
+    const demandaEfetivaSetor = Math.min(cap, demandaRaw);
+
+    sectorData[sectorKey] = {
+      cap, peso, precoBase, precoAtual, demandaRaw, 
+      demandaEfetivaSetor, 
+      usedDynamicElasticity: res.dynamicElasticity
+    };
+    
+    somaAtendimentoPossivel += demandaEfetivaSetor;
+    somaDemandaMandanteRaw += demandaRaw;
+  });
+
+  // Fator de Fidelidade: Se o total de interessados que cabem no estádio 
+  // ultrapassa a torcida ativa, escalonamos proporcionalmente.
+  fatorCorrecao = somaAtendimentoPossivel > homeFanBase ? (homeFanBase / somaAtendimentoPossivel) : 1.0;
+
+  // SEGUNDA PASSADA: Renderização final
+  sectors.forEach(sectorKey => {
+    const data = sectorData[sectorKey];
+    const publicoFinal = Math.round(data.demandaEfetivaSetor * fatorCorrecao);
+    
+    totalAttendance += publicoFinal;
+    homeAttendance += publicoFinal;
+    grossRevenue += publicoFinal * data.precoAtual;
+
+    updateProgressBar(sectorKey, publicoFinal, data.cap);
+  })
+
+  // Complementar sincronização e feedback visual após primeira passada
+  sectors.forEach(sectorKey => {
+    const { cap, peso, precoBase, precoAtual, demandaRaw: demandaRawOrig, usedDynamicElasticity } = sectorData[sectorKey];
+    const inputEl = document.getElementById(`price-${sectorKey}`);
+    const sliderEl = document.getElementById(`slider-${sectorKey}`);
 
     // Sincroniza slider (se existir) com o valor atual
-    const sliderEl = document.getElementById(`slider-${sectorKey}`);
     if (sliderEl) {
       const min = Number(sliderEl.min);
       const max = Number(sliderEl.max);
@@ -841,58 +1034,6 @@ function computeAndRender() {
         }
       }
     } catch (e) {}
-
-    // Cálculo da Demanda
-    let demandaRaw = 0;
-    let usedDynamicElasticity = window.Logic.SectorElasticity[sectorKey] || 1.0;
-    try {
-      const res = window.Logic.calculateDemand({
-        torcidaBase: homeFanBase,
-        fase: faseMandante,
-        importancia: importancia,
-        pesoSetor: peso,
-        precoBase: precoBase,
-        precoAtual: precoAtual,
-        sector: sectorKey,
-        atratividadeAdversario: matchAptitude
-      });
-      if (res && typeof res === 'object' && 'demand' in res) {
-        demandaRaw = res.demand;
-        usedDynamicElasticity = res.dynamicElasticity || usedDynamicElasticity;
-      } else {
-        demandaRaw = Number(res) || 0;
-      }
-    } catch (error) {
-      console.error(`Error calculating demand for ${sectorKey}:`, error);
-    }
-
-    // Armazena dados para passada 2
-    sectorData[sectorKey] = {
-      cap, peso, precoBase, precoAtual, demandaRaw, usedDynamicElasticity
-    };
-    
-    somaDemandaMandanteRaw += demandaRaw;
-  });
-
-  // NORMALIZAÇÃO: Se soma ultrapassa homeFanBase, aplica fator de correção
-  if (somaDemandaMandanteRaw > homeFanBase && somaDemandaMandanteRaw > 0) {
-    fatorCorrecao = homeFanBase / somaDemandaMandanteRaw;
-  }
-
-  // SEGUNDA PASSADA: Aplica correção e renderiza
-  sectors.forEach(sectorKey => {
-    const { cap, peso, precoBase, precoAtual, demandaRaw: demandaRawOrig, usedDynamicElasticity } = sectorData[sectorKey];
-
-    // Aplica fator de correção
-    const demandaRaw = demandaRawOrig * fatorCorrecao;
-    const publicoFinal = Math.min(cap, Math.round(demandaRaw));
-    
-    totalAttendance += publicoFinal;
-    homeAttendance += publicoFinal;
-    grossRevenue += publicoFinal * precoAtual;
-
-    // Atualiza Barra e cria div expansível com detalhes
-    updateProgressBar(sectorKey, publicoFinal, cap);
 
     try {
       const progWrap = document.getElementById(`progress-wrap-${sectorKey}`);
@@ -1064,7 +1205,13 @@ function computeAndRender() {
 
   // 6. CUSTOS E LUCROS
   // Custo Fixo escala com a qualidade do estádio
-  const fixedCostReal = STD_FIXED_COST * multiplier;
+  let fixedCostReal = STD_FIXED_COST * multiplier;
+  
+  // Adiciona custo de aluguel se for estádio sem dono
+  if (isRentalStadium && rentalPrice > 0) {
+    fixedCostReal += rentalPrice;
+  }
+  
   // Custo Variável escala com a qualidade (Ex: Excelente = 1.5x mais caro por pessoa)
   const costPerHead = Math.round(STD_VARIABLE_COST * multiplier);
   const variableCostReal = costPerHead * totalAttendance;
@@ -1072,149 +1219,120 @@ function computeAndRender() {
   const totalCosts = fixedCostReal + variableCostReal;
   const netProfit = grossRevenue - totalCosts;
 
-  // 7. MEMÓRIA DE CÁLCULO (Dashboard Auditoria - Enterprise Style com Análise Técnica)
-  let mathExplanation = '';
-  if (currentHomeIndex !== null && currentHomeIndex !== undefined) {
-    // Calcular engajamento percentual
-    const engajementoPercentual = ((homeFanBase / rawHomeFans) * 100).toFixed(1);
-    const fatorContexto = (faseMandante * importancia).toFixed(3);
+// 7. MEMÓRIA DE CÁLCULO (Enterprise Dashboard Refinado)
+  if (currentHomeIndex !== null) {
+    const ctxTotal = (faseMandante * importancia * matchAptitude).toFixed(2);
+    const engagementBand = getEngagementBand(rawHomeFans);
+    const shortageApplied = fatorCorrecao < 1.0;
     
-    // ═══════════════════════════════════════════════════════════════
-    // HEADER: Contexto Global Expandido (TAREFA 1)
-    // ═══════════════════════════════════════════════════════════════
     mathExplanation = `
-      <div class="audit-header mb-4">
-        <h6 class="mb-3" style="font-size: 1rem; font-weight: 600; color: var(--brand-9);">
-          Memória de Cálculo - ${homeSerie}
-        </h6>
-        
-        <div class="kpi-grid mb-4">
-          <div class="kpi-audit-card">
-            <div class="kpi-label">Torcida Ativa</div>
-            <div class="kpi-value">${formatNumber(homeFanBase)}</div>
-            <div class="kpi-subtitle">${engajementoPercentual}% de ${formatNumber(rawHomeFans)}</div>
+      <div class="audit-report p-3">
+        <div class="row g-3 mb-4">
+          
+          <div class="col-md-4">
+            <div class="kpi-audit-card border-top border-primary border-4 shadow-sm">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="label text-primary fw-bold">CAPACIDADE ATIVA (α)</span>
+                <i class="bi bi-people text-primary opacity-50"></i>
+              </div>
+              <div class="value-container mb-2">
+                <span class="value display-6 fw-bold text-dark">${formatNumber(homeFanBase)}</span>
+                <span class="unit text-muted small ms-1">fãs</span>
+              </div>
+              <div class="sub-info d-flex flex-column gap-1">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="text-secondary small">Engajamento (η):</span>
+                  <span class="badge bg-secondary">${((homeFanBase/rawHomeFans)*100).toFixed(1)}%</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="text-secondary small">Perfil:</span>
+                  <span class="var-badge text-uppercase">${engagementBand.name}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="kpi-audit-card">
-            <div class="kpi-label">Fator Contexto</div>
-            <div class="kpi-value">${fatorContexto}</div>
-            <div class="kpi-subtitle">Fase: ${faseMandante.toFixed(2)}x × Importância: ${importancia}x</div>
+
+          <div class="col-md-4">
+            <div class="kpi-audit-card border-top border-indigo border-4 shadow-sm" style="border-top-color: #4c6ef5 !important;">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="label fw-bold" style="color: #4c6ef5;">FATOR DE EVENTO (Φ)</span>
+                <i class="bi bi-lightning-charge text-indigo opacity-50" style="color: #4c6ef5;"></i>
+              </div>
+              <div class="value-container mb-2">
+                <span class="value display-6 fw-bold text-dark">${ctxTotal}</span>
+                <span class="unit text-muted small ms-1">x</span>
+              </div>
+              <div class="sub-info small text-secondary">
+                <div class="mb-1 d-flex justify-content-between">
+                  <span>Multiplicador Base:</span>
+                  <span class="fw-bold">Φ = f · i · β</span>
+                </div>
+                <div class="bg-light p-1 px-2 rounded-pill border d-flex justify-content-around font-monospace" style="font-size: 0.75rem;">
+                  <span>f:${faseMandante.toFixed(2)}</span>
+                  <span>i:${importancia}</span>
+                  <span>β:${matchAptitude}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="kpi-audit-card">
-            <div class="kpi-label">Fator Confronto</div>
-            <div class="kpi-value">${(matchAptitude * 100).toFixed(0)}%</div>
-            <div class="kpi-subtitle">${homeSerie} vs ${awaySerie}</div>
+
+          <div class="col-md-4">
+            <div class="kpi-audit-card border-top border-${shortageApplied ? 'danger' : 'success'} border-4 shadow-sm">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="label text-${shortageApplied ? 'danger' : 'success'} fw-bold">EFICIÊNCIA (λ)</span>
+                <i class="bi bi-${shortageApplied ? 'exclamation-circle' : 'check-circle'} text-${shortageApplied ? 'danger' : 'success'} opacity-50"></i>
+              </div>
+              <div class="value-container mb-2">
+                <span class="value display-6 fw-bold text-dark">${(fatorCorrecao * 100).toFixed(0)}%</span>
+              </div>
+              <div class="sub-info">
+                <p class="mb-0 text-secondary" style="font-size: 0.8rem; line-height: 1.2;">
+                  ${shortageApplied 
+                    ? `<strong>Escassez detectada:</strong> A demanda física superou em ${((1/fatorCorrecao - 1)*100).toFixed(0)}% o pool de fãs ativos.` 
+                    : `<strong>Sistema equilibrado:</strong> Todos os torcedores interessados foram alocados.`}
+                </p>
+              </div>
+            </div>
           </div>
+
+        </div>
+
+        <div class="audit-table-wrapper shadow-sm rounded">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Setor</th>
+                <th>Interesse Bruto</th>
+                <th>Cap. Física</th>
+                <th>Impacto Preço</th>
+                <th>Demanda Ajustada</th>
+                <th>Final</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sectors.map(s => {
+                const d = sectorData[s];
+                const ratio = (d.precoBase / d.precoAtual).toFixed(2);
+                const final = Math.round(d.demandaEfetivaSetor * fatorCorrecao);
+                return `
+                  <tr class="indicator-${s}">
+                    <td><strong>${s.toUpperCase()}</strong></td>
+                    <td>${formatNumber(Math.round(homeFanBase * d.peso * faseMandante * importancia * matchAptitude))}</td>
+                    <td>${formatNumber(d.cap)}</td>
+                    <td>${ratio}x (k=${d.usedDynamicElasticity.toFixed(1)})</td>
+                    <td>${formatNumber(Math.round(d.demandaRaw))}</td>
+                    <td class="fw-bold text-dark">${formatNumber(final)}</td>
+                  </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+          ${fatorCorrecao < 1 ? `
+            <div class="p-2 bg-danger bg-opacity-10 text-danger small fw-bold text-center border-top border-danger border-opacity-25">
+              ⚠️ Ajuste de escassez global de ${((1 - fatorCorrecao) * 100).toFixed(1)}% aplicado para respeitar o teto de torcedores ativos.
+            </div>` : ''}
         </div>
       </div>
-
-      <!-- Tabela de Auditoria Analítica (TAREFA 2) -->
-      <div class="audit-table-wrapper">
-        <table class="audit-table">
-          <thead>
-            <tr>
-              <th>Setor</th>
-              <th>Base Útil</th>
-              <th>Mult. Social</th>
-              <th>Mult. Econômico</th>
-              <th>Demanda Final</th>
-              <th>Ocupação</th>
-            </tr>
-          </thead>
-          <tbody>
-`;
-
-    // Gerar linhas da tabela para cada setor (TAREFA 2)
-    sectors.forEach(sectorKey => {
-      const { peso, precoBase, precoAtual, demandaRaw: demandaRawOrig, usedDynamicElasticity } = sectorData[sectorKey];
-      const demandaRaw = demandaRawOrig * fatorCorrecao;
-      const capacidade = sectorDistribution[sectorKey];
-      const publicoFinal = Math.min(capacidade, Math.round(demandaRaw));
-
-      const elasticity = usedDynamicElasticity || window.Logic.SectorElasticity[sectorKey] || 1.0;
-      const priceRatio = precoBase / precoAtual;
-      const fatorPreco = Math.pow(priceRatio, elasticity);
-      
-      // Base Útil = Torcida Ativa × Peso do Setor
-      const baseUtil = Math.round(homeFanBase * peso);
-      
-      // Multiplicador Social = Fase × Importância × Prestígio
-      const multSocial = (faseMandante * importancia * matchAptitude).toFixed(2);
-      
-      // Multiplicador Econômico = Fator de Preço (Elasticidade)
-      const multEconomico = fatorPreco.toFixed(2);
-
-      const ocupacaoPct = ((publicoFinal / capacidade) * 100).toFixed(0);
-      const sectorLabel = sectorKey.charAt(0).toUpperCase() + sectorKey.slice(1);
-
-      mathExplanation += `
-            <tr class="indicator-${sectorKey}">
-              <td><strong>${sectorLabel}</strong></td>
-              <td>${formatNumber(baseUtil)}</td>
-              <td><span class="var-badge">${multSocial}x</span></td>
-              <td><span class="var-badge">${multEconomico}x</span></td>
-              <td><strong>${formatNumber(Math.round(demandaRaw))}</strong></td>
-              <td><span class="occupancy-badge">${ocupacaoPct}%</span></td>
-            </tr>
-`;
-    });
-
-    // Adicionar linha de rodapé se houver redução
-    if (fatorCorrecao < 1.0) {
-      const percentAjuste = ((1 - fatorCorrecao) * 100).toFixed(1);
-      mathExplanation += `
-            <tr class="table-footer-warning">
-              <td colspan="6">
-                <strong style="color: #c92a2a;">Capacidade excedida: ajuste global de -${percentAjuste}% aplicado</strong>
-              </td>
-            </tr>
-`;
-    }
-
-    // Adicionar linha de visitantes
-    const baseUtilVis = Math.round(visitorDemandBase);
-    const multSocialVis = (faseVisitante * importancia * matchAptitude).toFixed(2);
-    const priceRatioVis = precoBaseVis / precoAtualVis;
-    const fatorPrecoVis = Math.pow(priceRatioVis, visitorDynamicElasticity).toFixed(2);
-    const ocupacaoVisitorPct = ((publicoVis / capVis) * 100).toFixed(0);
-
-    mathExplanation += `
-            <tr class="indicator-visitante">
-              <td><strong>Visitante</strong></td>
-              <td>${formatNumber(baseUtilVis)}</td>
-              <td><span class="var-badge">${multSocialVis}x</span></td>
-              <td><span class="var-badge">${fatorPrecoVis}x</span></td>
-              <td><strong>${formatNumber(Math.round(demandaVisRaw))}</strong></td>
-              <td><span class="occupancy-badge">${ocupacaoVisitorPct}%</span></td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Glossário de Variáveis (TAREFA 3) -->
-      <div class="glossary-section mt-4">
-        <h6 class="glossary-title">Legenda Técnica</h6>
-        <div class="glossary-items">
-          <div class="glossary-item">
-            <span class="glossary-term"><span class="var-badge">w</span> Peso (w)</span>
-            <span class="glossary-desc">Preferência natural do torcedor por este setor. Varia por série e qualidade do estádio.</span>
-          </div>
-          <div class="glossary-item">
-            <span class="glossary-term"><span class="var-badge">k</span> Elasticidade (k)</span>
-            <span class="glossary-desc">Sensibilidade do setor ao preço. Popular = ${window.Logic.SectorElasticity.popular.toFixed(1)} (sensível), Camarote = ${window.Logic.SectorElasticity.camarote.toFixed(1)} (insensível).</span>
-          </div>
-          <div class="glossary-item">
-            <span class="glossary-term"><span class="var-badge">β</span> Prestígio (β)</span>
-            <span class="glossary-desc">Impacto relativo da aptidão entre séries no confronto. Aumenta demanda em clássicos e jogos importantes.</span>
-          </div>
-          <div class="glossary-item">
-            <span class="glossary-term"><span class="var-badge">φ</span> Fator Contexto (φ)</span>
-            <span class="glossary-desc">Produto da Fase (momentum do time) × Importância (crítica do jogo). Modula a demanda potencial.</span>
-          </div>
-        </div>
-      </div>
-`;
-
+    `;
   }
 
   // Exibe na seção de Memória de Cálculo
@@ -1289,6 +1407,9 @@ function computeAndRender() {
 
   // Re-init tooltips para garantir que títulos/tooltips novos sejam aplicados
   try { initTooltips(); } catch (e) {}
+
+  // Atualiza o display do preço base (soluciona bug de atualização)
+  updateBasePriceDisplays();
 
   // Popula o detalhamento de demanda
   const demandListEl = document.getElementById('demand-list-html');

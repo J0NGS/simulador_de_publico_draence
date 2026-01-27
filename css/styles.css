@@ -226,7 +226,7 @@ header h1 {
 /* Memória de Cálculo - Estética "Dev Report" */
 #math-explanation-content {
   background: #1a1e19 !important;
-  color: #e0e0e0 !important;
+  color: #c1d1bf !important;
   border: 1px solid var(--brand-9);
   padding: 1.5rem !important;
   font-family: 'Inter', sans-serif !important;
@@ -291,6 +291,17 @@ header h1 {
   font-weight: 800;
   padding: 0.4rem 0.7rem;
   letter-spacing: 0.3px;
+}
+
+/* Sobrescrever cores claras para KPI cards dentro do math-explanation */
+#math-explanation-content .kpi-audit-card {
+  color: var(--text-primary) !important;
+}
+
+#math-explanation-content .kpi-label,
+#math-explanation-content .kpi-value,
+#math-explanation-content .kpi-subtitle {
+  color: var(--text-primary) !important;
 }
 
 /* Badges e Tags */
@@ -500,7 +511,7 @@ button, .btn, .moment-btn {
 .kpi-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--brand-7);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 0.5rem;
@@ -509,13 +520,13 @@ button, .btn, .moment-btn {
 .kpi-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--brand-9);
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .kpi-subtitle {
   font-size: 0.7rem;
-  color: var(--brand-7);
+  color: var(--text-primary);
 }
 
 /* AUDIT TABLE */
