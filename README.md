@@ -13,7 +13,7 @@
 [Sobre o Projeto](#-sobre-o-projeto) •
 [Características](#-características) •
 [Arquitetura](#-arquitetura) •
-[Como Usar](#-como-usar) •
+[Link](https://j0ngs.github.io/simulador_de_publico_draence/) •
 [Tecnologias](#-tecnologias)
 
 </div>
