@@ -1,316 +1,241 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Calculadora de Renda de Estádio</title>
-      <div class="text-center py-1">
-        <img src="assets/calculadora_publico_draence.png" alt="Logo" style="height:120px;" />
-      </div>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css">
-  </head>
-  <body class="bg-dark text-light">
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#eef3e1">
+    <title>Simulador de Público e Renda - Draence</title>
+    <meta name="description" content="Simule público, receita, custos e lucro de uma partida na Draence, ajustando preços por setor, estádio e momento das equipes.">
+    <link rel="icon" type="image/png" href="assets/img/pes-drae.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="assets/js/theme.js"></script>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/simulador.css">
+</head>
+<body>
+    <script src="assets/js/icons.js"></script>
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="index.html" class="brand">
+                <img src="assets/img/pes-drae.png" alt="Draence Logo">
+                <span class="brand__text">
+                    <strong>DRAENCE</strong>
+                    <small>Simulador de Público</small>
+                </span>
+            </a>
+            <nav class="site-nav" aria-label="Navegação principal">
+                <a href="index.html" class="nav-link is-active" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-landmark"></use></svg>Simulador</a>
+                <a href="metodologia.html" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-circle-help"></use></svg>Metodologia</a>
+                <button type="button" class="theme-toggle" aria-label="Alternar tema"><svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg><svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg></button>
+            </nav>
+        </div>
+    </header>
 
-    <main class="container-fluid py-2">
-      <div class="row g-4">
-        <!-- Coluna 1: Configurações do Jogo -->
-        <aside class="col-lg-3">
-          <div class="card card-dark h-100">
-            <div class="card-body">
-              <h5 class="card-title">Configurações do Jogo</h5>
-              <p class="text-muted">Defina os parâmetros básicos</p>
-
-              <!-- Mandante -->
-              <div class="mb-3">
-                <label class="form-label">Mandante</label>
-                <select id="select-mandante" class="form-select" aria-label="Mandante">
-                  <option value="">Carregando times...</option>
-                </select>
-              </div>
-
-              <div class="mb-3">
-  <div class="d-flex justify-content-between align-items-center mb-2">
-    <label class="form-label mb-0">Momento do Mandante</label>
-    <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" id="switch-home-phase" checked>
-      <label class="form-check-label small text-muted" for="switch-home-phase">Auto</label>
-    </div>
-  </div>
-
-  <div id="home-phase-auto">
-    <div class="small text-muted mb-1">Últimos 5 Jogos (Geral)</div>
-    <div id="moment-general" class="d-flex gap-2 mb-2">
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-    </div>
-    <div class="small text-muted mb-1">Últimos 5 Jogos (Casa)</div>
-    <div id="moment-home" class="d-flex gap-2">
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-       <button type="button" class="moment-btn state-draw" data-value="1"></button>
-    </div>
-    <small class="text-muted d-block mt-2">Fase Calculada: <strong id="phase-factor-display">--</strong></small>
-  </div>
-
-  <div id="home-phase-manual" class="d-none">
-    <label class="small text-muted">Força do Time (0 a 100)</label>
-    <input type="number" id="input-home-phase" class="form-control" value="50" min="0" max="100">
-  </div>
-</div>
-
-              <!-- Visitante -->
-              <div class="mb-3">
-                <label class="form-label">Visitante</label>
-                <select id="select-visitante" class="form-select" aria-label="Visitante">
-                  <option value="">Carregando times...</option>
-                </select>
-              </div>
-
-              <div class="mb-3">
-  <div class="d-flex justify-content-between align-items-center mb-2">
-    <label class="form-label mb-0">Momento do Visitante</label>
-    <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" id="switch-visitor-phase" checked>
-      <label class="form-check-label small text-muted" for="switch-visitor-phase">Auto</label>
-    </div>
-  </div>
-
-  <div id="visitor-phase-auto">
-    <div class="small text-muted mb-1">Últimos 5 Jogos (Geral)</div>
-    <div id="moment-visitor-general" class="d-flex gap-2 mb-2">
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-    </div>
-
-    <div class="small text-muted mb-1">Últimos 5 Jogos (Fora)</div>
-    <div id="moment-visitor-away" class="d-flex gap-2">
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-      <button type="button" class="moment-btn state-draw" data-value="1"></button>
-    </div>
-
-    <small class="text-muted d-block mt-2">Fase Calculada: <strong id="visitor-phase-factor-display">--</strong></small>
-  </div>
-
-  <div id="visitor-phase-manual" class="d-none">
-    <label class="small text-muted">Força do Visitante (0 a 100)</label>
-    <input type="number" id="input-visitor-phase" class="form-control" value="50" min="0" max="100">
-  </div>
-</div>
-
-              <div class="mb-3">
-                <label class="form-label">Importância do Jogo</label>
-                <select id="select-importance" class="form-select bg-white text-dark border-secondary-subtle">
-                  <option value="0.5">Amistoso Irrelevante (x0.5)</option>
-                  <option value="0.75">Jogo de Cumprir Tabela (x0.75)</option>
-                  <option value="1.0" selected>Campeonato Regular (x1.0)</option>
-                  <option value="1.25">Clássico / Jogo Importante (x1.25)</option>
-                  <option value="1.5">Mata-Mata / Decisivo (x1.5)</option>
-                  <option value="1.75">Semifinal / Jogo do Título (x1.75)</option>
-                  <option value="2.0">Grande Final (x2.0)</option>
-                </select>
-              </div>
-
-              <!-- Stadium Selection -->
-              <div class="mb-3">
-                <label class="form-label">Estádio do Jogo</label>
-                <select id="select-stadium" class="form-select bg-white text-dark border-secondary-subtle">
-                  <option value="">Carregando estádios...</option>
-                </select>
-              </div>
-
-              <!-- Rental Price for Neutral Stadiums -->
-              <div id="rental-price-section" class="mb-3 d-none">
-                <label class="form-label">Preço de Aluguel do Estádio</label>
-                <div class="d-flex gap-2">
-                  <input type="range" id="rental-price-slider" class="form-range" min="10000" max="500000" step="5000" value="50000">
-                </div>
-                <div class="mt-2">
-                  <input type="text" id="rental-price-input" class="form-control" value="R$ 50.000,00">
-                </div>
-                <small class="text-muted mt-1">Este estádio é neutro (sem dono). O valor de aluguel será descontado dos custos.</small>
-              </div>
-
-              
-            </div>
-          </div>
-        </aside>
-
-        <!-- Coluna 2: Precificação por Setor -->
-        <section class="col-lg-5">
-          <div class="card card-dark h-100">
-            <div class="card-body">
-              <h5 class="card-title">Precificação por Setor</h5>
-              <p class="text-muted">Defina preço e capacidade por setor</p>
-
-              <div id="mandante-stadium-info" class="mb-3 d-none">
-                <label class="form-label">Estádio (Mandante)</label>
-                <div class="bg-secondary p-3 rounded text-dark">
-                  <div><strong>Nome:</strong> <span id="stadium-name">--</span></div>
-                  <div><strong>Qualidade:</strong> <span id="stadium-quality">--</span></div>
-                  <div><strong>Capacidade:</strong> <span id="stadium-capacity">--</span></div>
-                </div>
-              </div>
-
-              <div class="row gy-3">
-                <div class="col-12 mt-3" id="sectors-wrapper">
-                  <div id="sectors-container" class="row gy-3"></div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+    <!-- MAIN CONTENT -->
+    <main class="page-wrapper">
+        <section class="page-intro">
+            <span class="eyebrow">Simulador</span>
+            <h1>Simulador de <span class="hl">público e renda</span></h1>
+            <p>Escolha o confronto e o estádio, defina o preço de cada setor e acompanhe, em tempo real, o público, a receita e o lucro da partida.</p>
         </section>
 
-        <!-- Coluna 3: Resumo Financeiro -->
-        <aside class="col-lg-4">
-          <div class="card card-dark mb-3 h-100">
-            <div class="card-body">
-              <h5 class="card-title">Resumo Financeiro</h5>
-              <p class="text-muted">Visão geral e gráficos</p>
+        <div class="error-box" id="erroDados" role="alert"></div>
 
-              <div class="mb-3">
-                <label class="form-label">Ocupação por Setor</label>
-                <div id="progress-container" class="mb-2"></div>
-              </div>
+        <div class="sim-layout">
+            <!-- FORMULÁRIO -->
+            <form id="formSimulador" class="sim-form" autocomplete="off">
+                <!-- 1. CONFRONTO -->
+                <section class="card">
+                    <h2 class="card-title"><span class="card-step">1</span>Confronto<svg class="icon card-title__icon" aria-hidden="true"><use href="#i-shirt"></use></svg></h2>
 
-              <div class="row g-3">
-                <div class="col-6">
-                  <div class="card card-dark summary-card p-3">
-                    <small class="text-muted">Receita</small>
-                    <div class="h5 mt-2">R$ <span id="gross-revenue-small">--.--</span></div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="card card-dark summary-card p-3">
-                    <small class="text-muted">Lucro</small>
-                    <div class="h5 mt-2">R$ <span id="net-profit-small">--.--</span></div>
-                  </div>
-                </div>
-              </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="selectMandante"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Mandante<span class="required">*</span></label>
+                            <select id="selectMandante" disabled>
+                                <option value="">Carregando times...</option>
+                            </select>
+                        </div>
 
-              <div class="mt-3" id="kpi-summary">
-                <div class="row g-2">
-                  <div class="col-6">
-                    <div class="small text-muted cursor-pointer text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#attendance-details" aria-expanded="false">Público presente</div>
-                    <div class="h6" id="total-attendance">--</div>
-                    <div class="small text-muted mt-1 collapse" id="attendance-details">
-                      Mandante: -- + Visitante: --
+                        <div class="form-group">
+                            <label for="selectVisitante"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"></use></svg>Visitante</label>
+                            <select id="selectVisitante" disabled>
+                                <option value="">Carregando times...</option>
+                            </select>
+                            <p class="help-text" id="visitanteSerie" hidden></p>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="selectImportancia"><svg class="icon" aria-hidden="true"><use href="#i-trophy"></use></svg>Importância do jogo
+                                <span class="tooltip-icon" tabindex="0" data-tooltip="Multiplica a demanda de todos os setores. Jogos decisivos enchem mais o estádio e tornam o torcedor menos sensível ao preço.">?</span>
+                            </label>
+                            <select id="selectImportancia"></select>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="small text-muted cursor-pointer text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#cost-details" aria-expanded="false">Custos (Fixo + Variável)</div>
-                    <div class="h6" id="total-costs">R$ --</div>
-                    <div class="small text-muted mt-1 collapse" id="cost-details">
-                      Fixo: R$ -- <br>
-                      Var: R$ -- ( -- * R$25)
-                    </div>
-                  </div>
-                </div>
-                <div class="row g-2 mt-2">
-                  <div class="col-6">
-                    <div class="small text-muted">Receita Bruta</div>
-                    <div class="h6" id="gross-revenue">R$ --</div>
-                  </div>
-                  <div class="col-6">
-                    <div class="small text-muted">Lucro Líquido</div>
-                    <div class="h6" id="net-profit">R$ --</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </div>
+                </section>
 
-      <!-- Dashboard de Auditoria - Nova Linha Separada -->
-      <div class="row mt-4">
-        <div class="col-12">
-          <div class="card border-0">
-            <div class="card-header bg-transparent border-bottom border-secondary-50 py-3 px-4">
-              <div class="d-flex align-items-center justify-content-between">
-                <div>
-                  <h6 class="mb-0" style="font-weight: 600; font-size: 0.95rem;">
-                    <i class="bi bi-graph-up me-2"></i>Dashboard de Auditoria
-                  </h6>
-                  <small class="text-secondary" style="font-size: 0.75rem;">Memória de cálculo e análise técnica</small>
+                <!-- 2. MOMENTO DAS EQUIPES -->
+                <section class="card">
+                    <h2 class="card-title"><span class="card-step">2</span>Momento das equipes<svg class="icon card-title__icon" aria-hidden="true"><use href="#i-trending-up"></use></svg></h2>
+                    <p class="card-lead">Clique em cada jogo para alternar entre <strong>vitória</strong>, <strong>empate</strong> e <strong>derrota</strong>. O momento recente puxa o público para cima ou para baixo.</p>
+                    <div class="phase-grid" id="painelFase"></div>
+                </section>
+
+                <!-- 3. ESTÁDIO -->
+                <section class="card">
+                    <h2 class="card-title"><span class="card-step">3</span>Estádio<svg class="icon card-title__icon" aria-hidden="true"><use href="#i-landmark"></use></svg></h2>
+
+                    <div class="form-grid form-grid--stack">
+                        <div class="form-group">
+                            <label for="selectEstadio"><svg class="icon" aria-hidden="true"><use href="#i-landmark"></use></svg>Estádio do jogo</label>
+                            <select id="selectEstadio" disabled>
+                                <option value="">Escolha o mandante primeiro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <dl class="stadium-info" id="estadioInfo" hidden></dl>
+
+                    <div class="form-group rental" id="aluguel" hidden>
+                        <label for="aluguelValor"><svg class="icon" aria-hidden="true"><use href="#i-hand-coins"></use></svg>Preço de aluguel
+                            <span class="tooltip-icon" tabindex="0" data-tooltip="Estádio neutro, sem dono: o aluguel entra nos custos fixos e os preços base dos setores dobram.">?</span>
+                        </label>
+                        <div class="money-field money-field--boxed">
+                            <span class="money-prefix">£D</span>
+                            <input type="text" id="aluguelValor" class="input-money" inputmode="numeric" autocomplete="off">
+                        </div>
+                        <input type="range" id="aluguelSlider" class="range" aria-label="Preço de aluguel">
+                        <p class="help-text">Descontado dos custos da partida</p>
+                    </div>
+                </section>
+
+                <!-- 4. PREÇOS POR SETOR -->
+                <section class="card">
+                    <h2 class="card-title"><span class="card-step">4</span>Preços por setor<svg class="icon card-title__icon" aria-hidden="true"><use href="#i-ticket"></use></svg></h2>
+                    <div id="setores" class="sector-grid"></div>
+                    <p class="sector-empty" id="setoresVazio">Escolha o mandante para definir o preço de cada setor.</p>
+                </section>
+            </form>
+
+            <!-- RESULTADO -->
+            <aside class="sim-result" aria-live="polite">
+                <div class="result-section" id="resultado">
+                    <!-- LUCRO -->
+                    <div class="score-card" id="placarLucro">
+                        <div class="score-label">
+                            <svg class="icon" aria-hidden="true"><use href="#i-wallet"></use></svg>Lucro líquido <span class="score-badge" id="lucroSelo">Lucro</span>
+                        </div>
+                        <div class="score-value" id="lucroValor">£D 0</div>
+                        <div class="score-formula" id="lucroFormula">Receita £D 0 − custos £D 0</div>
+                        <div class="score-meta">
+                            <span class="score-percent-badge" id="lucroMargem"></span>
+                            <span class="score-meta__text">de margem sobre a receita</span>
+                        </div>
+                    </div>
+
+                    <!-- RESUMO -->
+                    <div class="result-block">
+                        <h3 class="result-block__title"><svg class="icon" aria-hidden="true"><use href="#i-chart-column"></use></svg>Resumo da partida</h3>
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-item-label"><svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg>Público presente</div>
+                                <div class="result-item-value" id="publicoTotal">0</div>
+                                <div class="result-item-note" id="publicoDetalhe"></div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-item-label"><svg class="icon" aria-hidden="true"><use href="#i-banknote"></use></svg>Receita bruta</div>
+                                <div class="result-item-value" id="receitaBruta">£D 0</div>
+                                <div class="result-item-note" id="ingressoMedio"></div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-item-label"><svg class="icon" aria-hidden="true"><use href="#i-landmark"></use></svg>Custo fixo</div>
+                                <div class="result-item-value" id="custoFixo">£D 0</div>
+                                <div class="result-item-note" id="custoFixoNota"></div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-item-label"><svg class="icon" aria-hidden="true"><use href="#i-coins"></use></svg>Custo variável</div>
+                                <div class="result-item-value" id="custoVariavel">£D 0</div>
+                                <div class="result-item-note" id="custoVariavelNota"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OCUPAÇÃO -->
+                    <div class="result-block">
+                        <h3 class="result-block__title"><svg class="icon" aria-hidden="true"><use href="#i-gauge"></use></svg>Ocupação por setor</h3>
+                        <ul class="occupancy" id="ocupacao"></ul>
+                    </div>
+
+                    <!-- TORCIDA -->
+                    <div class="result-block">
+                        <h3 class="result-block__title"><svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg>Torcida do mandante
+                            <span class="tooltip-icon" tabindex="0" data-tooltip="Só uma fração da torcida total costuma ir ao estádio. Times maiores têm torcida mais dispersa, então a fração ativa é menor.">?</span>
+                        </h3>
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-item-label">Torcida total</div>
+                                <div class="result-item-value" id="torcidaTotal">0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-item-label">Torcida ativa</div>
+                                <div class="result-item-value" id="torcidaAtiva">0</div>
+                                <div class="result-item-note" id="torcidaPerfil"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-sm btn-outline-secondary" 
-                        type="button" data-bs-toggle="collapse" data-bs-target="#math-details"
-                        style="font-size: 0.8rem;">
-                  <i class="bi bi-code-slash me-1"></i>Detalhes Técnicos
-                </button>
-              </div>
-            </div>
-            <div class="collapse" id="math-details">
-              <div class="card-body p-0">
-                <div id="math-explanation-content" class="px-4 py-3">
-                  <div class="empty-state" style="padding: 2rem 1rem;">
-                    <div class="empty-icon" style="font-size: 2rem;">—</div>
-                    <div class="empty-text">Selecione um time para ver a análise detalhada</div>
-                  </div>
+
+                <!-- ESTADO VAZIO (oculto via CSS quando #resultado está visível) -->
+                <div class="result-empty">
+                    <div class="result-empty__pitch" aria-hidden="true">
+                        <svg viewBox="0 0 320 200" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="6" width="308" height="188" rx="4"/>
+                            <line x1="160" y1="6" x2="160" y2="194"/>
+                            <circle cx="160" cy="100" r="30"/>
+                            <circle cx="160" cy="100" r="3" fill="currentColor"/>
+                            <rect x="6" y="52" width="46" height="96"/>
+                            <rect x="6" y="78" width="18" height="44"/>
+                            <path d="M52 80 A24 24 0 0 1 52 120"/>
+                            <rect x="268" y="52" width="46" height="96"/>
+                            <rect x="296" y="78" width="18" height="44"/>
+                            <path d="M268 80 A24 24 0 0 0 268 120"/>
+                            <circle cx="38" cy="100" r="2.5" fill="currentColor"/>
+                            <circle cx="282" cy="100" r="2.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h2><svg class="icon" aria-hidden="true"><use href="#i-whistle"></use></svg>Aguardando o apito inicial</h2>
+                    <p>Escolha o <strong>mandante</strong> para ver o público, a receita e o lucro da partida.</p>
+                    <ol class="result-empty__steps">
+                        <li><span>1</span>Escolha mandante e visitante</li>
+                        <li><span>2</span>Ajuste momento e estádio</li>
+                        <li><span>3</span>Defina os preços</li>
+                    </ol>
                 </div>
-              </div>
-            </div>
-          </div>
+            </aside>
         </div>
-      </div>
 
-      </div>
+        <!-- AUDITORIA -->
+        <details class="card audit" id="auditoria">
+            <summary class="audit__summary">
+                <span class="audit__title"><svg class="icon" aria-hidden="true"><use href="#i-sigma"></use></svg>Auditoria do cálculo</span>
+                <span class="audit__hint">Memória de cálculo e análise técnica</span>
+                <svg class="icon audit__chevron" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </summary>
+            <div class="audit__body" id="auditoriaConteudo">
+                <p class="audit__empty">Escolha o mandante para ver a análise detalhada.</p>
+            </div>
+        </details>
     </main>
 
-    <footer class="py-3 text-center text-muted small">
-      © <span id="currentYear"></span> Calculadora de Renda de Estádio — <a href="#" data-bs-toggle="modal" data-bs-target="#methodologyModal" class="text-muted">Metodologia de Cálculo</a>
+    <footer class="main-footer">
+        <p>
+            Desenvolvido por <a href="https://github.com/J0NGS" target="_blank" rel="noopener">J0NGS</a> • <a href="metodologia.html">Metodologia de cálculo</a><br>
+            Draence Simulador de Público v3.0.0 • Todos os direitos reservados © <span id="ano">2026</span>
+        </p>
     </footer>
 
-    <!-- Modal: Metodologia -->
-    <div class="modal fade" id="methodologyModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content bg-dark text-light border-secondary">
-          <div class="modal-header border-bottom border-secondary">
-            <h5 class="modal-title h6">Metodologia de Cálculo</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <p class="text-muted small">Este simulador utiliza um modelo de elasticidade-preço da demanda.</p>
-            
-            <h6 class="text-white mt-3">1. Torcida Ativa</h6>
-            <p class="small text-muted">Consideramos uma curva de engajamento decrescente. Times com milhões de torcedores possuem uma taxa de conversão menor (torcedores de sofá) do que times pequenos (torcedores militantes).</p>
-
-            <h6 class="text-white mt-3">2. Sensibilidade ao Preço</h6>
-            <p class="small text-muted">Cada setor possui uma tolerância diferente. O setor Popular reage agressivamente a aumentos (elasticidade alta), enquanto Camarotes são menos afetados (elasticidade baixa).</p>
-
-            <h6 class="text-white mt-3">3. Custo Operacional</h6>
-            <p class="small text-muted">Estádios de melhor qualidade possuem custos fixos e variáveis (por torcedor) mais elevados devido ao padrão de serviço exigido.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/logic.js" defer></script>
-    <script src="js/app.js" defer></script>
-    <script>
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-    </script>
-  </body>
+    <script type="module" src="assets/js/main.js"></script>
+</body>
 </html>

@@ -6,11 +6,11 @@
  *
  * Observações:
  * - Todas as funções são escritas em JS puro e não conectam ao DOM diretamente.
- * - Exportadas em `window.Logic` para fácil reutilização/depuração no console.
+ * - Exportadas como módulo ES (`import { calculateDemand } from './logic.js'`).
  */
 
 // Enum/objeto que define a distribuição percentual por setor (valores somam 1.0)
-const StadiumQuality = Object.freeze({
+export const StadiumQuality = Object.freeze({
   RUIM: {
     popular: 0.50,
     intermediario: 0.20,
@@ -49,7 +49,7 @@ const StadiumQuality = Object.freeze({
 });
 
 // Multiplicador de Qualidade (Q) - Afeta Preço Base e Custo Fixo
-const QualityMultiplier = Object.freeze({
+export const QualityMultiplier = Object.freeze({
   RUIM: 0.6,
   REGULAR: 0.8,
   BOM: 1.0,
@@ -58,7 +58,7 @@ const QualityMultiplier = Object.freeze({
 });
 
 // Elasticidades por setor (valores base para importancia = 1.0)
-const SectorElasticity = Object.freeze({
+export const SectorElasticity = Object.freeze({
   popular: 2.8,
   intermediario: 1.5,
   premium: 1.1,
@@ -68,7 +68,7 @@ const SectorElasticity = Object.freeze({
 
 // Pesos de Interesse da Torcida (w) - Representa a vontade natural da torcida por cada setor
 // Reequilíbrio para estádios de elite: maior propensão a setores superiores em jogos importantes
-const InterestWeights = Object.freeze({
+export const InterestWeights = Object.freeze({
   popular: 1.0,
   intermediario: 0.6,
   premium: 0.25,
@@ -77,20 +77,20 @@ const InterestWeights = Object.freeze({
 });
 
 // Multiplicador de atratividade do adversário por Série (influencia público visitante/geral)
-const SeriesMultiplier = Object.freeze({
+export const SeriesMultiplier = Object.freeze({
   A: 1.2,
   B: 0.6,
   C: 0.3
 });
 
 // Matriz de prestígio do confronto (MandanteSerie+VisitanteSerie)
-const PrestigeMatrix = {
+export const PrestigeMatrix = {
   AA: 1.5, AB: 0.7, AC: 0.4,
   BA: 1.5, BB: 1.0, BC: 0.6,
   CA: 2.2, CB: 1.3, CC: 0.8
 };
 
-function getMatchAptitude(homeSerie, awaySerie) {
+export function getMatchAptitude(homeSerie, awaySerie) {
   const key = ((homeSerie || '') + (awaySerie || '')).toUpperCase();
   return PrestigeMatrix[key] || 0.5;
 }
@@ -99,7 +99,7 @@ function getMatchAptitude(homeSerie, awaySerie) {
  * Normaliza uma string de qualidade removendo acentos e formatando para uppercase
  * Retorna a chave compatível com `StadiumQuality` (fallback para 'BOM')
  */
-function normalizeQuality(quality) {
+export function normalizeQuality(quality) {
   if (!quality && quality !== 0) return 'BOM';
   const s = String(quality).normalize('NFD').replace(/\p{Diacritic}/gu, '').toUpperCase().trim();
   if (StadiumQuality[s]) return s;
@@ -116,7 +116,7 @@ function normalizeQuality(quality) {
  * @param {string} quality - uma das chaves de StadiumQuality (ex: 'OTIMO', 'RUIM') ou uma string com acentos
  * @returns {Object} mapa { popular, intermediario, premium, camarote, visitante } com números inteiros de cadeiras
  */
-function calculateSectorDistribution(totalCapacity, quality) {
+export function calculateSectorDistribution(totalCapacity, quality) {
   if (!Number.isFinite(totalCapacity) || totalCapacity <= 0) {
     throw new Error('totalCapacity deve ser um número maior que zero');
   }
@@ -175,7 +175,7 @@ function calculateSectorDistribution(totalCapacity, quality) {
  *
  * Retorna um número >= 0 (não arredonda internamente; o chamador decide arredondar ou limitar)
  */
-function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor = 1, precoBase = 1, precoAtual = 1, sector = 'popular', atratividadeAdversario = 1 } = {}) {
+export function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor = 1, precoBase = 1, precoAtual = 1, sector = 'popular', atratividadeAdversario = 1 } = {}) {
   // Validações básicas
   if (precoAtual <= 0) {
     throw new Error('precoAtual deve ser > 0');
@@ -221,28 +221,7 @@ function calculateDemand({ torcidaBase = 0, fase = 1, importancia = 1, pesoSetor
 /**
  * Retorna o multiplicador numérico baseado na string de qualidade
  */
-function getQualityMultiplier(qualityString) {
+export function getQualityMultiplier(qualityString) {
   const q = normalizeQuality(qualityString); // Garante que é maiúsculo e válido
   return QualityMultiplier[q] || 1.0;
-}
-
-// Export para uso/interação futura (sem conectar ao DOM diretamente aqui)
-if (typeof window !== 'undefined') {
-  window.Logic = window.Logic || {};
-  window.Logic.StadiumQuality = StadiumQuality;
-  window.Logic.calculateSectorDistribution = calculateSectorDistribution;
-  window.Logic.calculateDemand = calculateDemand;
-  window.Logic.SectorElasticity = SectorElasticity;
-  window.Logic.SeriesMultiplier = SeriesMultiplier;
-  window.Logic.PrestigeMatrix = PrestigeMatrix;
-  window.Logic.getMatchAptitude = getMatchAptitude;
-  window.Logic.normalizeQuality = normalizeQuality;
-  window.Logic.getQualityMultiplier = getQualityMultiplier;
-  window.Logic.QualityMultiplier = QualityMultiplier;
-  window.Logic.InterestWeights = InterestWeights;
-}
-
-// Exports (para ambientes module-aware, caso futuramente migremos)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { StadiumQuality, calculateSectorDistribution, calculateDemand, SectorElasticity };
 }
