@@ -40,7 +40,7 @@ export function getBasePrices(stadium, isRental) {
  * @param {object|null} input.visitor time visitante (ou null)
  * @param {object} input.stadium     { name, quality, capacity, owner }
  * @param {boolean} input.isRental   estádio sem dono
- * @param {number} input.rentalPrice aluguel (R$), usado se isRental
+ * @param {number} input.rentalPrice aluguel (£D), usado se isRental
  * @param {number} input.importance  multiplicador de importância do jogo
  * @param {object} input.phases      { home, visitor } no formato de phase.js
  * @param {object} input.prices      preço digitado por setor (vazio → preço base)

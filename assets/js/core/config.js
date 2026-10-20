@@ -37,7 +37,7 @@ export const STD_VARIABLE_COST = 10;
 /** Estádio sem dono: preços e custos escalam por este fator. */
 export const RENTAL_PRICE_FACTOR = 2;
 
-/** Aluguel de estádio neutro (R$). */
+/** Aluguel de estádio neutro (£D). */
 export const RENTAL = Object.freeze({ min: 10000, max: 500000, step: 5000, initial: 50000 });
 
 /** Cada setor deve custar ao menos 40% a mais que o anterior (escada de valor). */

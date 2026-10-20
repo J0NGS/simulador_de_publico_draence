@@ -77,7 +77,7 @@ export function initPricing({ state, onPrice }) {
       step: 1
     });
     const field = h('div', { class: 'money-field money-field--boxed' },
-      h('span', { class: 'money-prefix' }, 'R$'), input);
+      h('span', { class: 'money-prefix' }, '£D'), input);
     const flag = h('span', { class: 'price-flag' });
     const details = h('dl', { class: 'calc-list' });
 
