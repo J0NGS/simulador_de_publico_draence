@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Documento técnico que descreve o modelo implementado em `js/logic.js` e utilizado por `js/app.js`.
+Documento técnico que descreve o modelo implementado em `assets/js/core/logic.js` e utilizado por `assets/js/` (módulos `core/` e `ui/`).
 
 **Objetivo:** Simular demanda por setor e resultado financeiro (receita bruta, custos, lucro) considerando:
 - Curvas de engajamento (Torcida Ativa)
@@ -449,7 +449,7 @@ Observação: `visitante` utiliza `precoAtual = preco(intermediario)` por regra 
 - Tooltips na interface exibem a fórmula aplicada por setor e os valores intermediários (potencial, fator preço, elasticidade, resultado), permitindo auditoria manual dos cálculos.
 
 ### Compatibilidade com código existente
-- Este documento reflete o comportamento atual de `js/app.js` e `js/logic.js`. Qualquer alteração nos nomes (`STD_PRICES`, `STD_VARIABLE_COST`, `SectorElasticity`, `calculateEffectiveFanBase`, `calculateDemand`) deve ser refletida aqui e no código.
+- Este documento reflete o comportamento atual de `assets/js/` (módulos `core/` e `ui/`) e `assets/js/core/logic.js`. Qualquer alteração nos nomes (`STD_PRICES`, `STD_VARIABLE_COST`, `SectorElasticity`, `calculateEffectiveFanBase`, `calculateDemand`) deve ser refletida aqui e no código.
 
 ---
 Referências rápidas (variáveis no código): `STD_PRICES`, `STD_FIXED_COST`, `STD_VARIABLE_COST`, `calculateEffectiveFanBase()`, `calculatePhaseFactor()`, `calculateDemand()`, `enforcePriceChain()`.
